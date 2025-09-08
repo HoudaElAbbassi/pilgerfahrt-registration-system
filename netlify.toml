@@ -1,0 +1,75 @@
+# netlify.toml - Netlify Configuration File
+
+# Build Settings
+[build]
+  # Directory where the website files are located
+  publish = "."
+
+  # Directory where Netlify Functions are stored
+  functions = "netlify/functions"
+
+  # Build command (optional, since we're using static files)
+  command = "echo 'Static site - no build needed'"
+
+# Function Settings
+[functions]
+  # Use esbuild for faster function bundling
+  node_bundler = "esbuild"
+
+  # Include external node modules in functions
+  external_node_modules = ["pg"]
+
+# Headers for CORS (Cross-Origin Resource Sharing)
+[[headers]]
+  # Apply to all API endpoints
+  for = "/.netlify/functions/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
+    Access-Control-Allow-Headers = "Content-Type, Authorization"
+    Access-Control-Allow-Methods = "GET, POST, PUT, DELETE, OPTIONS"
+
+# Additional headers for static files
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+# Redirects (optional)
+[[redirects]]
+  # Redirect API calls to functions
+  from = "/api/submit-passport"
+  to = "/.netlify/functions/submit-passport"
+  status = 200
+
+# Form Settings (if you want to keep Netlify Forms as backup)
+[build.processing]
+  skip_processing = false
+
+# Environment-specific settings
+[context.production]
+  command = "echo 'Production build'"
+
+[context.deploy-preview]
+  command = "echo 'Deploy preview build'"
+
+[context.branch-deploy]
+  command = "echo 'Branch deploy build'"
+
+# Plugin Configuration (optional, for additional features)
+[[plugins]]
+  package = "@netlify/plugin-functions-install-core"
+
+# Edge Functions (optional, for advanced use cases)
+# [[edge_functions]]
+#   function = "passport-edge"
+#   path = "/edge-api/*"
+
+# Dev Settings (for local development)
+[dev]
+  command = "echo 'Development server starting'"
+  port = 8888
+  publish = "."
+  functions = "netlify/functions"

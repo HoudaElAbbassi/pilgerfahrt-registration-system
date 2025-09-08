@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Passport Registration Form</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c3e50, #3498db);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+
+        .form-container {
+            padding: 40px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 0.95em;
+        }
+
+        input[type="text"],
+        input[type="tel"],
+        input[type="date"] {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e1e8ed;
+            border-radius: 10px;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+
+        input[type="text"]:focus,
+        input[type="tel"]:focus,
+        input[type="date"]:focus {
+            outline: none;
+            border-color: #3498db;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        .file-upload {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .file-upload input[type="file"] {
+            position: absolute;
+            left: -9999px;
+        }
+
+        .file-upload-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            border: 2px dashed #3498db;
+            border-radius: 10px;
+            background: #f8f9fa;
+            transition: all 0.3s ease;
+            min-height: 80px;
+            text-align: center;
+        }
+
+        .file-upload-label:hover {
+            border-color: #2980b9;
+            background: #e3f2fd;
+        }
+
+        .file-upload-label .upload-icon {
+            font-size: 2em;
+            margin-bottom: 10px;
+            color: #3498db;
+        }
+
+        .file-upload-label .upload-text {
+            color: #2c3e50;
+            font-weight: 500;
+        }
+
+        .preview-container {
+            margin-top: 15px;
+            display: none;
+        }
+
+        .image-preview {
+            max-width: 200px;
+            max-height: 200px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .section-title {
+            color: #2c3e50;
+            font-size: 1.3em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #ecf0f1;
+            font-weight: 600;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            padding: 18px 40px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 20px;
+            box-shadow: 0 10px 20px rgba(52, 152, 219, 0.3);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(52, 152, 219, 0.4);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .required {
+            color: #e74c3c;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                margin: 10px;
+            }
+
+            .form-container {
+                padding: 20px;
+            }
+
+            .header {
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 2em;
+            }
+        }
+
+        .success-message {
+            display: none;
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #c3e6cb;
+        }
+
+        .error-message {
+            display: none;
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #f5c6cb;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>📋 Passport Registration</h1>
+        <p>Bitte füllen Sie alle Felder aus und laden Sie Ihre Bilder hoch</p>
+    </div>
+
+    <div class="form-container">
+        <div class="success-message" id="successMessage">
+            ✅ Ihre Daten wurden erfolgreich übermittelt!
+        </div>
+
+        <div class="error-message" id="errorMessage">
+            ❌ Es gab einen Fehler beim Senden. Bitte versuchen Sie es erneut.
+        </div>
+
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Daten werden übermittelt...</p>
+        </div>
+
+        <form name="passport-registration" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" id="passportForm">
+            <!-- Honeypot for spam protection -->
+            <p style="display: none;">
+                <label>Don't fill this out: <input name="bot-field" /></label>
+            </p>
+
+            <!-- Personal Information Section -->
+            <div class="section-title">👤 Persönliche Informationen</div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="vorname">Vorname <span class="required">*</span></label>
+                    <input type="text" id="vorname" name="vorname" required>
+                </div>
+                <div class="form-group">
+                    <label for="nachname">Nachname <span class="required">*</span></label>
+                    <input type="text" id="nachname" name="nachname" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="telefon">Telefonnummer <span class="required">*</span></label>
+                <input type="tel" id="telefon" name="telefon" placeholder="+49 123 456789" required>
+            </div>
+
+            <!-- Passport Information Section -->
+            <div class="section-title">🛂 Passinformationen</div>
+
+            <div class="form-group">
+                <label for="passnummer">Passnummer <span class="required">*</span></label>
+                <input type="text" id="passnummer" name="passnummer" required>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="gueltigkeit">Gültigkeitsdatum <span class="required">*</span></label>
+                    <input type="date" id="gueltigkeit" name="gueltigkeit" required>
+                </div>
+                <div class="form-group">
+                    <label for="ausstellungsort">Ausstellungsort <span class="required">*</span></label>
+                    <input type="text" id="ausstellungsort" name="ausstellungsort" required>
+                </div>
+            </div>
+
+            <!-- Image Upload Section -->
+            <div class="section-title">📸 Bildupload</div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="passport-image">Passbild <span class="required">*</span></label>
+                    <div class="file-upload">
+                        <input type="file" id="passport-image" name="passport-image" accept="image/*" required>
+                        <label for="passport-image" class="file-upload-label">
+                            <div>
+                                <div class="upload-icon">📷</div>
+                                <div class="upload-text">Passbild hochladen</div>
+                                <small>Weißer Hintergrund erforderlich</small>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="preview-container" id="passport-preview">
+                        <img class="image-preview" id="passport-img">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="document-image">Ausweis/Pass Foto <span class="required">*</span></label>
+                    <div class="file-upload">
+                        <input type="file" id="document-image" name="document-image" accept="image/*" required>
+                        <label for="document-image" class="file-upload-label">
+                            <div>
+                                <div class="upload-icon">🆔</div>
+                                <div class="upload-text">Dokument hochladen</div>
+                                <small>Ausweis oder Pass</small>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="preview-container" id="document-preview">
+                        <img class="image-preview" id="document-img">
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="submit-btn">
+                📤 Daten übermitteln
+            </button>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Image preview functionality
+    function setupImagePreview(inputId, previewId, imgId) {
+        const input = document.getElementById(inputId);
+        const preview = document.getElementById(previewId);
+        const img = document.getElementById(imgId);
+
+        input.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    img.src = e.target.result;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+
+    // Setup previews for both image inputs
+    setupImagePreview('passport-image', 'passport-preview', 'passport-img');
+    setupImagePreview('document-image', 'document-preview', 'document-img');
+
+    // Form submission handling
+    document.getElementById('passportForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const loading = document.getElementById('loading');
+        const successMessage = document.getElementById('successMessage');
+        const errorMessage = document.getElementById('errorMessage');
+
+        // Hide messages
+        successMessage.style.display = 'none';
+        errorMessage.style.display = 'none';
+        loading.style.display = 'block';
+
+        // Create FormData object
+        const formData = new FormData(this);
+
+        // Submit to Netlify
+        fetch('/', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => {
+                loading.style.display = 'none';
+                if (response.ok) {
+                    successMessage.style.display = 'block';
+                    this.reset();
+                    document.getElementById('passport-preview').style.display = 'none';
+                    document.getElementById('document-preview').style.display = 'none';
+                } else {
+                    throw new Error('Network response was not ok');
+                }
+            })
+            .catch(error => {
+                loading.style.display = 'none';
+                errorMessage.style.display = 'block';
+                console.error('Error:', error);
+            });
+    });
+
+    // Phone number formatting
+    document.getElementById('telefon').addEventListener('input', function(e) {
+        let value = e.target.value.replace(/\D/g, '');
+        if (value.startsWith('49')) {
+            value = '+' + value;
+        } else if (value.startsWith('0')) {
+            value = '+49' + value.substring(1);
+        }
+        e.target.value = value;
+    });
+
+    // Passport number formatting (uppercase)
+    document.getElementById('passnummer').addEventListener('input', function(e) {
+        e.target.value = e.target.value.toUpperCase();
+    });
+</script>
+</body>
+</html>

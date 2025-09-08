@@ -1,0 +1,55 @@
+{
+  "name": "netlify-passport-registration",
+  "version": "1.0.0",
+  "description": "Passport registration form with Netlify Functions and Neon Database",
+  "main": "index.html",
+  "scripts": {
+    "dev": "netlify dev",
+    "build": "echo 'Static site - no build step required'",
+    "start": "netlify dev",
+    "deploy": "netlify deploy",
+    "deploy:prod": "netlify deploy --prod",
+    "functions:dev": "netlify functions:serve",
+    "install:clean": "rm -rf node_modules package-lock.json && npm install"
+  },
+  "keywords": [
+    "netlify",
+    "serverless",
+    "passport",
+    "form",
+    "neon",
+    "database",
+    "functions"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "dependencies": {
+    "pg": "^8.11.3"
+  },
+  "devDependencies": {
+    "netlify-cli": "^17.10.1"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/netlify-passport-form.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/netlify-passport-form/issues"
+  },
+  "homepage": "https://your-passport-form.netlify.app",
+  "netlify": {
+    "functions": {
+      "directory": "netlify/functions",
+      "node_bundler": "esbuild"
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}
