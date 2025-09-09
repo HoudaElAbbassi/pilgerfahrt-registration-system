@@ -24,7 +24,8 @@
   "author": "Your Name",
   "license": "MIT",
   "dependencies": {
-    "dotenv": "^17.2.2",
+    "busboy": "^1.6.0",
+    "dotenv": "^16.3.1",
     "pg": "^8.11.3"
   },
   "devDependencies": {
