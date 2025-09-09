@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Passport Registration Form</title>
+    <title>Hajj Passport Registration Form</title>
     <style>
         * {
             margin: 0;
@@ -19,7 +19,7 @@
         }
 
         .container {
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
             background: white;
             border-radius: 20px;
@@ -32,6 +32,39 @@
             color: white;
             padding: 30px;
             text-align: center;
+            position: relative;
+        }
+
+        .logo {
+            max-width: 150px;
+            max-height: 80px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(255,255,255,0.2);
+        }
+
+        .logo-upload {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+
+        .logo-upload input {
+            display: none;
+        }
+
+        .logo-upload label {
+            background: rgba(255,255,255,0.2);
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .logo-upload label:hover {
+            background: rgba(255,255,255,0.3);
         }
 
         .header h1 {
@@ -59,17 +92,39 @@
             gap: 20px;
         }
 
-        label {
-            display: block;
+        .form-row-three {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+        }
+
+        .bilingual-label {
+            display: flex;
+            flex-direction: column;
             margin-bottom: 8px;
+        }
+
+        .label-german {
             font-weight: 600;
             color: #2c3e50;
             font-size: 0.95em;
+            margin-bottom: 2px;
+        }
+
+        .label-arabic {
+            font-weight: 500;
+            color: #5a6c7d;
+            font-size: 0.9em;
+            direction: rtl;
+            text-align: right;
+            font-family: 'Arial', 'Tahoma', sans-serif;
         }
 
         input[type="text"],
+        input[type="email"],
         input[type="tel"],
-        input[type="date"] {
+        input[type="date"],
+        select {
             width: 100%;
             padding: 15px;
             border: 2px solid #e1e8ed;
@@ -80,12 +135,44 @@
         }
 
         input[type="text"]:focus,
+        input[type="email"]:focus,
         input[type="tel"]:focus,
-        input[type="date"]:focus {
+        input[type="date"]:focus,
+        select:focus {
             outline: none;
             border-color: #3498db;
             background: white;
             box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        select {
+            cursor: pointer;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 20px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+
+        .radio-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .radio-item input[type="radio"] {
+            width: 20px;
+            height: 20px;
+            accent-color: #3498db;
+        }
+
+        .radio-item label {
+            cursor: pointer;
+            font-weight: 500;
+            color: #2c3e50;
         }
 
         .file-upload {
@@ -148,6 +235,36 @@
             padding-bottom: 10px;
             border-bottom: 2px solid #ecf0f1;
             font-weight: 600;
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .section-title-arabic {
+            font-size: 1.1em;
+            margin-top: 5px;
+            color: #5a6c7d;
+            direction: rtl;
+            font-family: 'Arial', 'Tahoma', sans-serif;
+        }
+
+        .conditional-field {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #e74c3c;
+        }
+
+        .conditional-field.show {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .submit-btn {
@@ -165,21 +282,35 @@
             box-shadow: 0 10px 20px rgba(52, 152, 219, 0.3);
         }
 
-        .submit-btn:hover {
+        .submit-btn:hover:not(:disabled) {
             transform: translateY(-2px);
             box-shadow: 0 15px 30px rgba(52, 152, 219, 0.4);
         }
 
-        .submit-btn:active {
+        .submit-btn:active:not(:disabled) {
             transform: translateY(0);
+        }
+
+        .submit-btn:disabled {
+            background: #95a5a6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
         }
 
         .required {
             color: #e74c3c;
         }
 
+        .info-text {
+            font-size: 0.9em;
+            color: #7f8c8d;
+            margin-top: 5px;
+            font-style: italic;
+        }
+
         @media (max-width: 768px) {
-            .form-row {
+            .form-row, .form-row-three {
                 grid-template-columns: 1fr;
             }
 
@@ -198,26 +329,38 @@
             .header h1 {
                 font-size: 2em;
             }
+
+            .logo-upload {
+                position: static;
+                margin-bottom: 15px;
+            }
+
+            .radio-group {
+                flex-direction: column;
+                gap: 10px;
+            }
         }
 
         .success-message {
             display: none;
             background: #d4edda;
             color: #155724;
-            padding: 15px;
+            padding: 20px;
             border-radius: 10px;
             margin-bottom: 20px;
             border: 1px solid #c3e6cb;
+            text-align: center;
         }
 
         .error-message {
             display: none;
             background: #f8d7da;
             color: #721c24;
-            padding: 15px;
+            padding: 20px;
             border-radius: 10px;
             margin-bottom: 20px;
             border: 1px solid #f5c6cb;
+            text-align: center;
         }
 
         .loading {
@@ -240,116 +383,448 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+
+        .contact-info {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        .contact-info strong {
+            color: #2c3e50;
+        }
+
+        .phone-link {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .phone-link:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
 <div class="container">
     <div class="header">
-        <h1>📋 Passport Registration</h1>
-        <p>Bitte füllen Sie alle Felder aus und laden Sie Ihre Bilder hoch</p>
+        <div class="logo-upload">
+            <input type="file" id="logoUpload" accept="image/*">
+            <label for="logoUpload">📎 Logo</label>
+        </div>
+
+        <div id="logoContainer">
+            <img src="./logo.jpg" alt="Logo" class="logo" id="logoImage">
+        </div>
+
+        <h1>Hajj Anmeldung<br><small style="font-size: 0.6em; opacity: 0.9;">تسجيل الحج</small></h1>
+        <p>Bitte füllen Sie alle Felder sorgfältig aus<br><small style="opacity: 0.8;">يرجى ملء جميع الحقول بعناية</small></p>
     </div>
 
     <div class="form-container">
         <div class="success-message" id="successMessage">
-            ✅ Ihre Daten wurden erfolgreich übermittelt!
+            ✅ <strong>Erfolgreich versendet!</strong><br>
+            <small style="opacity: 0.8;">تم الإرسال بنجاح!</small><br><br>
+            Ihre Hajj-Registrierung wurde erfolgreich übermittelt. Wir werden uns in Kürze melden.<br>
+            <small style="opacity: 0.8;">تم إرسال تسجيل الحج الخاص بك بنجاح. ستتلقى تأكيداً قريباً.</small>
         </div>
 
         <div class="error-message" id="errorMessage">
-            ❌ Es gab einen Fehler beim Senden. Bitte versuchen Sie es erneut.
+            ❌ <strong>Fehler beim Senden</strong><br>
+            <small style="opacity: 0.8;">خطأ في الإرسال</small><br><br>
+            Es gab einen technischen Fehler beim Übermitteln Ihrer Daten.<br>
+            <small style="opacity: 0.8;">حدث خطأ تقني في إرسال بياناتك.</small>
+            <div class="contact-info">
+                <strong>📞 Support kontaktieren:</strong><br>
+                <small>اتصل بالدعم:</small><br>
+                Telefon: <a href="tel:+491234567890" class="phone-link">+49 123 456 7890</a><br>
+                E-Mail: <a href="mailto:support@hajj-services.de" class="phone-link">support@hajj-services.de</a><br>
+                WhatsApp: <a href="https://wa.me/491234567890" class="phone-link" target="_blank">📱 WhatsApp</a>
+            </div>
         </div>
 
         <div class="loading" id="loading">
             <div class="spinner"></div>
-            <p>Daten werden übermittelt...</p>
+            <p>Daten werden übermittelt...<br><small>جاري إرسال البيانات...</small></p>
         </div>
 
-        <!-- WICHTIG: Netlify Forms Attribute entfernt! -->
-        <form id="passportForm">
+        <form id="hajjForm">
             <!-- Personal Information Section -->
-            <div class="section-title">👤 Persönliche Informationen</div>
+            <div class="section-title">
+                <div>👤 Persönliche Informationen</div>
+                <div class="section-title-arabic">المعلومات الشخصية</div>
+            </div>
 
             <div class="form-row">
                 <div class="form-group">
-                    <label for="vorname">Vorname <span class="required">*</span></label>
-                    <input type="text" id="vorname" name="vorname" required>
+                    <div class="bilingual-label">
+                        <div class="label-german">Vorname <span class="required">*</span></div>
+                        <div class="label-arabic">الاسم الأول</div>
+                    </div>
+                    <input type="text" id="vorname" name="vorname" placeholder="Vorname / الاسم الأول" required>
                 </div>
                 <div class="form-group">
-                    <label for="nachname">Nachname <span class="required">*</span></label>
-                    <input type="text" id="nachname" name="nachname" required>
+                    <div class="bilingual-label">
+                        <div class="label-german">Nachname <span class="required">*</span></div>
+                        <div class="label-arabic">اسم العائلة</div>
+                    </div>
+                    <input type="text" id="nachname" name="nachname" placeholder="Nachname / اسم العائلة" required>
                 </div>
             </div>
 
-            <div class="form-group">
-                <label for="telefon">Telefonnummer <span class="required">*</span></label>
-                <input type="tel" id="telefon" name="telefon" placeholder="+49 123 456789" required>
+            <div class="form-row">
+                <div class="form-group">
+                    <div class="bilingual-label">
+                        <div class="label-german">E-Mail Adresse <span class="required">*</span></div>
+                        <div class="label-arabic">عنوان البريد الإلكتروني</div>
+                    </div>
+                    <input type="email" id="email" name="email" placeholder="email@example.com" required>
+                </div>
+                <div class="form-group">
+                    <div class="bilingual-label">
+                        <div class="label-german">Telefonnummer (WhatsApp) <span class="required">*</span></div>
+                        <div class="label-arabic">رقم الهاتف (واتساب)</div>
+                    </div>
+                    <input type="tel" id="telefon" name="telefon" placeholder="+49 123 456789" required>
+                    <div class="info-text">Bitte WhatsApp-fähige Nummer angeben / يرجى إدخال رقم واتساب</div>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <div class="bilingual-label">
+                        <div class="label-german">Geburtsdatum <span class="required">*</span></div>
+                        <div class="label-arabic">تاريخ الميلاد</div>
+                    </div>
+                    <input type="date" id="geburtsdatum" name="geburtsdatum" required>
+                </div>
+                <div class="form-group">
+                    <div class="bilingual-label">
+                        <div class="label-german">Nationalität <span class="required">*</span></div>
+                        <div class="label-arabic">الجنسية</div>
+                    </div>
+                    <select id="nationalitaet" name="nationalitaet" required>
+                        <option value="">Nationalität wählen / اختر الجنسية</option>
+                        <optgroup label="Europa / أوروبا">
+                            <option value="deutsch">Deutsch / ألماني</option>
+                            <option value="oesterreichisch">Österreichisch / نمساوي</option>
+                            <option value="schweiz">Schweizer / سويسري</option>
+                            <option value="niederlaendisch">Niederländisch / هولندي</option>
+                            <option value="belgisch">Belgisch / بلجيكي</option>
+                            <option value="franzoesisch">Französisch / فرنسي</option>
+                            <option value="italienisch">Italienisch / إيطالي</option>
+                            <option value="spanisch">Spanisch / إسباني</option>
+                            <option value="britisch">Britisch / بريطاني</option>
+                            <option value="irisch">Irisch / أيرلندي</option>
+                            <option value="schwedisch">Schwedisch / سويدي</option>
+                            <option value="norwegisch">Norwegisch / نرويجي</option>
+                            <option value="daenisch">Dänisch / دنماركي</option>
+                            <option value="finnisch">Finnisch / فنلندي</option>
+                            <option value="polnisch">Polnisch / بولندي</option>
+                            <option value="tschechisch">Tschechisch / تشيكي</option>
+                            <option value="ungarisch">Ungarisch / مجري</option>
+                            <option value="rumaenisch">Rumänisch / روماني</option>
+                            <option value="bulgarisch">Bulgarisch / بلغاري</option>
+                            <option value="kroatisch">Kroatisch / كرواتي</option>
+                            <option value="serbisch">Serbisch / صربي</option>
+                            <option value="bosnisch">Bosnisch / بوسني</option>
+                            <option value="albanisch">Albanisch / ألباني</option>
+                            <option value="griechisch">Griechisch / يوناني</option>
+                            <option value="portugiesisch">Portugiesisch / برتغالي</option>
+                            <option value="russisch">Russisch / روسي</option>
+                            <option value="ukrainisch">Ukrainisch / أوكراني</option>
+                        </optgroup>
+                        <optgroup label="Naher Osten / الشرق الأوسط">
+                            <option value="tuerkisch">Türkisch / تركي</option>
+                            <option value="syrisch">Syrisch / سوري</option>
+                            <option value="irakisch">Irakisch / عراقي</option>
+                            <option value="libanesisch">Libanesisch / لبناني</option>
+                            <option value="jordanisch">Jordanisch / أردني</option>
+                            <option value="palaestinensisch">Palästinensisch / فلسطيني</option>
+                            <option value="iranisch">Iranisch / إيراني</option>
+                            <option value="israelisch">Israelisch / إسرائيلي</option>
+                            <option value="saudi">Saudi-Arabisch / سعودي</option>
+                            <option value="emiratisch">Emiratisch / إماراتي</option>
+                            <option value="katarisch">Katarisch / قطري</option>
+                            <option value="kuwaitisch">Kuwaitisch / كويتي</option>
+                            <option value="bahrainisch">Bahrainisch / بحريني</option>
+                            <option value="omanisch">Omanisch / عماني</option>
+                            <option value="jemenitisch">Jemenitisch / يمني</option>
+                        </optgroup>
+                        <optgroup label="Afrika / أفريقيا">
+                            <option value="aegyptisch">Ägyptisch / مصري</option>
+                            <option value="marokkanisch">Marokkanisch / مغربي</option>
+                            <option value="tunesisch">Tunesisch / تونسي</option>
+                            <option value="algerisch">Algerisch / جزائري</option>
+                            <option value="libyschen">Libyscher / ليبي</option>
+                            <option value="sudanesisch">Sudanesisch / سوداني</option>
+                            <option value="aethiopisch">Äthiopisch / إثيوبي</option>
+                            <option value="eritreisch">Eritreisch / إريتري</option>
+                            <option value="somalisch">Somalisch / صومالي</option>
+                            <option value="nigerianisch">Nigerianisch / نيجيري</option>
+                            <option value="ghanaisch">Ghanaisch / غاني</option>
+                            <option value="senegalesisch">Senegalesisch / سنغالي</option>
+                            <option value="malisch">Malisch / مالي</option>
+                            <option value="gambisch">Gambisch / غامبي</option>
+                            <option value="guineisch">Guineisch / غيني</option>
+                            <option value="ivorisch">Elfenbeinküste / ساحل العاج</option>
+                            <option value="kamerunisch">Kamerunisch / كاميروني</option>
+                            <option value="kongolesisch">Kongolesisch / كونغولي</option>
+                            <option value="suedafrikanisch">Südafrikanisch / جنوب أفريقي</option>
+                            <option value="kenianisch">Kenianisch / كيني</option>
+                            <option value="tansanisch">Tansanisch / تنزاني</option>
+                        </optgroup>
+                        <optgroup label="Asien / آسيا">
+                            <option value="afghanisch">Afghanisch / أفغاني</option>
+                            <option value="pakistanisch">Pakistanisch / باكستاني</option>
+                            <option value="indisch">Indisch / هندي</option>
+                            <option value="bangladeschisch">Bangladeschisch / بنغلاديشي</option>
+                            <option value="sri_lankisch">Sri Lankisch / سريلانكي</option>
+                            <option value="chinesisch">Chinesisch / صيني</option>
+                            <option value="japanisch">Japanisch / ياباني</option>
+                            <option value="koreanisch">Koreanisch / كوري</option>
+                            <option value="thailaendisch">Thailändisch / تايلاندي</option>
+                            <option value="vietnamesisch">Vietnamesisch / فيتنامي</option>
+                            <option value="philippinisch">Philippinisch / فلبيني</option>
+                            <option value="indonesisch">Indonesisch / إندونيسي</option>
+                            <option value="malaysisch">Malaysisch / ماليزي</option>
+                            <option value="singapurisch">Singapurisch / سنغافوري</option>
+                            <option value="burmesisch">Burmesisch / بورمي</option>
+                            <option value="kambodschanisch">Kambodschanisch / كمبودي</option>
+                            <option value="laotisch">Laotisch / لاوسي</option>
+                            <option value="mongolisch">Mongolisch / منغولي</option>
+                            <option value="nepalesisch">Nepalesisch / نيبالي</option>
+                            <option value="bhutanisch">Bhutanisch / بوتاني</option>
+                            <option value="usbekisch">Usbekisch / أوزبكي</option>
+                            <option value="kasachisch">Kasachisch / كازاخي</option>
+                            <option value="kirgisisch">Kirgisisch / قيرغيزي</option>
+                            <option value="tadschikisch">Tadschikisch / طاجيكي</option>
+                            <option value="turkmenisch">Turkmenisch / تركماني</option>
+                            <option value="aserbaidschanisch">Aserbaidschanisch / أذربيجاني</option>
+                            <option value="armenisch">Armenisch / أرمني</option>
+                            <option value="georgisch">Georgisch / جورجي</option>
+                        </optgroup>
+                        <optgroup label="Nord- & Südamerika / أمريكا الشمالية والجنوبية">
+                            <option value="amerikanisch">Amerikanisch / أمريكي</option>
+                            <option value="kanadisch">Kanadisch / كندي</option>
+                            <option value="mexikanisch">Mexikanisch / مكسيكي</option>
+                            <option value="brasilianisch">Brasilianisch / برازيلي</option>
+                            <option value="argentinisch">Argentinisch / أرجنتيني</option>
+                            <option value="chilenisch">Chilenisch / تشيلي</option>
+                            <option value="kolumbianisch">Kolumbianisch / كولومبي</option>
+                            <option value="peruanisch">Peruanisch / بيروفي</option>
+                            <option value="venezolanisch">Venezolanisch / فنزويلي</option>
+                            <option value="ecuadorianisch">Ecuadorianisch / إكوادوري</option>
+                            <option value="bolivianisch">Bolivianisch / بوليفي</option>
+                            <option value="uruguayisch">Uruguayisch / أوروغوائي</option>
+                            <option value="paraguayisch">Paraguayisch / باراغوائي</option>
+                        </optgroup>
+                        <optgroup label="Ozeanien / أوقيانوسيا">
+                            <option value="australisch">Australisch / أسترالي</option>
+                            <option value="neuseelaendisch">Neuseeländisch / نيوزيلندي</option>
+                        </optgroup>
+                        <optgroup label="Sonstige / أخرى">
+                            <option value="staatenlos">Staatenlos / عديم الجنسية</option>
+                            <option value="ungeklaert">Ungeklärt / غير محدد</option>
+                            <option value="sonstige">Sonstige / أخرى</option>
+                        </optgroup>
+                    </select>
+                </div>
             </div>
 
             <!-- Passport Information Section -->
-            <div class="section-title">🛂 Passinformationen</div>
+            <div class="section-title">
+                <div>🛂 Reisepass Informationen</div>
+                <div class="section-title-arabic">معلومات جواز السفر</div>
+            </div>
 
             <div class="form-group">
-                <label for="passnummer">Passnummer <span class="required">*</span></label>
-                <input type="text" id="passnummer" name="passnummer" required>
+                <div class="bilingual-label">
+                    <div class="label-german">Art des Reisepasses <span class="required">*</span></div>
+                    <div class="label-arabic">نوع جواز السفر</div>
+                </div>
+                <div class="radio-group">
+                    <div class="radio-item">
+                        <input type="radio" id="pass_europaeisch" name="passart" value="europaeisch" required>
+                        <label for="pass_europaeisch">Europäischer Pass<br><small>الجواز الأوروبي</small></label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="pass_blau" name="passart" value="blau" required>
+                        <label for="pass_blau">Blauer Reiseausweis<br><small>وثيقة السفر الزرقاء</small></label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="pass_auslaendisch" name="passart" value="auslaendisch" required>
+                        <label for="pass_auslaendisch">Ausländischer Pass mit Aufenthaltstitel<br><small>جواز سفر أجنبي مع إقامة</small></label>
+                    </div>
+                </div>
             </div>
 
             <div class="form-row">
                 <div class="form-group">
-                    <label for="gueltigkeit">Gültigkeitsdatum <span class="required">*</span></label>
-                    <input type="date" id="gueltigkeit" name="gueltigkeit" required>
+                    <div class="bilingual-label">
+                        <div class="label-german">Passnummer <span class="required">*</span></div>
+                        <div class="label-arabic">رقم جواز السفر</div>
+                    </div>
+                    <input type="text" id="passnummer" name="passnummer" placeholder="Passnummer / رقم جواز السفر" required>
                 </div>
                 <div class="form-group">
-                    <label for="ausstellungsort">Ausstellungsort <span class="required">*</span></label>
-                    <input type="text" id="ausstellungsort" name="ausstellungsort" required>
+                    <div class="bilingual-label">
+                        <div class="label-german">Pass Gültigkeit <span class="required">*</span></div>
+                        <div class="label-arabic">صلاحية جواز السفر</div>
+                    </div>
+                    <input type="date" id="passgueltigkeit" name="passgueltigkeit" required>
+                    <div class="info-text">Muss mindestens 6 Monate gültig sein / يجب أن يكون صالحاً لمدة 6 أشهر على الأقل</div>
                 </div>
             </div>
 
-            <!-- Image Upload Section -->
-            <div class="section-title">📸 Bildupload</div>
-
-            <div class="form-row">
+            <!-- Conditional Aufenthaltstitel Field -->
+            <div id="aufenthaltstitelSection" class="conditional-field">
                 <div class="form-group">
-                    <label for="passport-image">Passbild <span class="required">*</span></label>
+                    <div class="bilingual-label">
+                        <div class="label-german">Aufenthaltstitel hochladen <span class="required">*</span></div>
+                        <div class="label-arabic">تحميل تصريح الإقامة</div>
+                    </div>
                     <div class="file-upload">
-                        <input type="file" id="passport-image" name="passport-image" accept="image/*" required>
-                        <label for="passport-image" class="file-upload-label">
+                        <input type="file" id="aufenthaltstitel-image" name="aufenthaltstitel-image" accept="image/*">
+                        <label for="aufenthaltstitel-image" class="file-upload-label">
+                            <div>
+                                <div class="upload-icon">📄</div>
+                                <div class="upload-text">Aufenthaltstitel hochladen<br><small style="color: #7f8c8d;">تحميل تصريح الإقامة</small></div>
+                                <small>Beide Seiten erforderlich<br>الوجهين مطلوبان</small>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="preview-container" id="aufenthaltstitel-preview">
+                        <img class="image-preview" id="aufenthaltstitel-img">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Document Upload Section -->
+            <div class="section-title">
+                <div>📸 Dokumente hochladen</div>
+                <div class="section-title-arabic">تحميل الوثائق</div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <div class="bilingual-label">
+                        <div class="label-german">Reisepass Kopie <span class="required">*</span></div>
+                        <div class="label-arabic">نسخة من جواز السفر</div>
+                    </div>
+                    <div class="file-upload">
+                        <input type="file" id="passport-copy" name="passport-copy" accept="image/*" required>
+                        <label for="passport-copy" class="file-upload-label">
+                            <div>
+                                <div class="upload-icon">📋</div>
+                                <div class="upload-text">Reisepass Kopie<br><small style="color: #7f8c8d;">نسخة جواز السفر</small></div>
+                                <small>Alle relevanten Seiten<br>جميع الصفحات ذات الصلة</small>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="preview-container" id="passport-copy-preview">
+                        <img class="image-preview" id="passport-copy-img">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="bilingual-label">
+                        <div class="label-german">Biometrisches Passbild <span class="required">*</span></div>
+                        <div class="label-arabic">صورة جواز سفر بيومترية</div>
+                    </div>
+                    <div class="file-upload">
+                        <input type="file" id="passport-photo" name="passport-photo" accept="image/*" required>
+                        <label for="passport-photo" class="file-upload-label">
                             <div>
                                 <div class="upload-icon">📷</div>
-                                <div class="upload-text">Passbild hochladen</div>
-                                <small>Weißer Hintergrund erforderlich</small>
+                                <div class="upload-text">Biometrisches Passbild<br><small style="color: #7f8c8d;">صورة بيومترية</small></div>
+                                <small>Weißer Hintergrund, 35x45mm<br>خلفية بيضاء، 35x45 ملم</small>
                             </div>
                         </label>
                     </div>
-                    <div class="preview-container" id="passport-preview">
-                        <img class="image-preview" id="passport-img">
+                    <div class="preview-container" id="passport-photo-preview">
+                        <img class="image-preview" id="passport-photo-img">
                     </div>
                 </div>
+            </div>
 
-                <div class="form-group">
-                    <label for="document-image">Ausweis/Pass Foto <span class="required">*</span></label>
-                    <div class="file-upload">
-                        <input type="file" id="document-image" name="document-image" accept="image/*" required>
-                        <label for="document-image" class="file-upload-label">
-                            <div>
-                                <div class="upload-icon">🆔</div>
-                                <div class="upload-text">Dokument hochladen</div>
-                                <small>Ausweis oder Pass</small>
-                            </div>
-                        </label>
+            <!-- Nusuk Registration Section -->
+            <div class="section-title">
+                <div>📱 Nusuk Registration</div>
+                <div class="section-title-arabic">تسجيل نسك</div>
+            </div>
+
+            <div class="form-group">
+                <div class="bilingual-label">
+                    <div class="label-german">Haben Sie sich bereits auf Nusuk registriert? <span class="required">*</span></div>
+                    <div class="label-arabic">هل قمت بالتسجيل على نسك بالفعل؟</div>
+                </div>
+                <div class="radio-group">
+                    <div class="radio-item">
+                        <input type="radio" id="nusuk_ja" name="nusuk_registriert" value="ja" required>
+                        <label for="nusuk_ja">Ja / نعم</label>
                     </div>
-                    <div class="preview-container" id="document-preview">
-                        <img class="image-preview" id="document-img">
+                    <div class="radio-item">
+                        <input type="radio" id="nusuk_nein" name="nusuk_registriert" value="nein" required>
+                        <label for="nusuk_nein">Nein / لا</label>
                     </div>
+                </div>
+                <div class="info-text">
+                    Nusuk ist die offizielle Saudi-Arabische Plattform für Hajj und Umrah Registrierungen<br>
+                    <small>نسك هو المنصة الرسمية السعودية لتسجيلات الحج والعمرة</small>
                 </div>
             </div>
 
             <button type="submit" class="submit-btn">
-                📤 Daten übermitteln
+                📤 Hajj-Registrierung absenden<br><small style="font-size: 0.8em; opacity: 0.9;">إرسال تسجيل الحج</small>
             </button>
         </form>
     </div>
 </div>
 
 <script>
+    // Logo upload functionality
+    document.getElementById('logoUpload').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const logoContainer = document.getElementById('logoContainer');
+                logoContainer.innerHTML = `<img src="${e.target.result}" alt="Company Logo" class="logo" id="logoImage">`;
+                localStorage.setItem('companyLogo', e.target.result);
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // Load saved logo
+    document.addEventListener('DOMContentLoaded', function() {
+        const savedLogo = localStorage.getItem('companyLogo');
+        if (savedLogo) {
+            const logoContainer = document.getElementById('logoContainer');
+            logoContainer.innerHTML = `<img src="${savedLogo}" alt="Company Logo" class="logo" id="logoImage">`;
+        }
+    });
+
+    // Conditional Aufenthaltstitel field
+    document.querySelectorAll('input[name="passart"]').forEach(radio => {
+        radio.addEventListener('change', function() {
+            const aufenthaltstitelSection = document.getElementById('aufenthaltstitelSection');
+            const aufenthaltstitelInput = document.getElementById('aufenthaltstitel-image');
+
+            if (this.value === 'auslaendisch') {
+                aufenthaltstitelSection.classList.add('show');
+                aufenthaltstitelInput.required = true;
+            } else {
+                aufenthaltstitelSection.classList.remove('show');
+                aufenthaltstitelInput.required = false;
+            }
+        });
+    });
+
     // Image preview functionality
     function setupImagePreview(inputId, previewId, imgId) {
         const input = document.getElementById(inputId);
@@ -369,20 +844,61 @@
         });
     }
 
-    // Setup previews for both image inputs
-    setupImagePreview('passport-image', 'passport-preview', 'passport-img');
-    setupImagePreview('document-image', 'document-preview', 'document-img');
+    // Setup previews for all image inputs
+    setupImagePreview('passport-copy', 'passport-copy-preview', 'passport-copy-img');
+    setupImagePreview('passport-photo', 'passport-photo-preview', 'passport-photo-img');
+    setupImagePreview('aufenthaltstitel-image', 'aufenthaltstitel-preview', 'aufenthaltstitel-img');
 
-    // Form submission handling - FIXED für Database Function
-    document.getElementById('passportForm').addEventListener('submit', function(e) {
+    // Form submission handling with file size validation
+    document.getElementById('hajjForm').addEventListener('submit', function(e) {
         e.preventDefault();
         e.stopPropagation();
 
+        const submitBtn = document.querySelector('.submit-btn');
         const loading = document.getElementById('loading');
         const successMessage = document.getElementById('successMessage');
         const errorMessage = document.getElementById('errorMessage');
 
-        // Hide messages
+        // Prevent double submission
+        if (submitBtn.disabled) {
+            return;
+        }
+
+        // Final file validation before submission
+        const fileInputs = ['passport-copy', 'passport-photo', 'aufenthaltstitel-image'];
+        const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp', 'application/pdf'];
+        let hasInvalidFiles = false;
+
+        fileInputs.forEach(inputId => {
+            const input = document.getElementById(inputId);
+            if (input.files.length > 0) {
+                const file = input.files[0];
+
+                // Check file type
+                if (!allowedTypes.includes(file.type)) {
+                    hasInvalidFiles = true;
+                    alert(`❌ Ungültiger Dateityp: ${file.name}\nErlaubt: JPG, PNG, GIF, WebP, PDF\n\nنوع ملف غير صحيح: ${file.name}\nالمسموح: JPG, PNG, GIF, WebP, PDF`);
+                    return;
+                }
+
+                // Check file size
+                if (file.size > 10 * 1024 * 1024) { // 10MB check
+                    hasInvalidFiles = true;
+                    const sizeMB = (file.size / (1024 * 1024)).toFixed(2);
+                    alert(`❌ Fehler: ${file.name} ist ${sizeMB}MB groß (Max: 10MB)\n\nخطأ: ${file.name} حجمه ${sizeMB} ميجابايت (الحد الأقصى: 10 ميجابايت)`);
+                }
+            }
+        });
+
+        if (hasInvalidFiles) {
+            return; // Stop submission
+        }
+
+        // Disable submit button immediately
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '⏳ Wird gesendet...<br><small style="font-size: 0.8em; opacity: 0.9;">جاري الإرسال...</small>';
+
+        // Hide previous messages
         successMessage.style.display = 'none';
         errorMessage.style.display = 'none';
         loading.style.display = 'block';
@@ -390,34 +906,79 @@
         // Create FormData object
         const formData = new FormData(this);
 
-        // Submit to Netlify Function (NICHT mehr zu '/')
-        fetch('/.netlify/functions/submit-passport', {
+        // Submit to Netlify Function
+        fetch('/.netlify/functions/submit-hajj-registration', {
             method: 'POST',
             body: formData
         })
             .then(response => {
                 if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                    throw new Error(`Server Error ${response.status}`);
                 }
                 return response.json();
             })
             .then(data => {
                 loading.style.display = 'none';
+
                 if (data.success) {
-                    successMessage.innerHTML = `✅ ${data.message} (ID: ${data.id})`;
+                    // SUCCESS
+                    successMessage.innerHTML = `
+                    ✅ <strong>Erfolgreich versendet!</strong><br>
+                    <small style="opacity: 0.8;">تم الإرسال بنجاح!</small><br><br>
+                    Ihre Hajj-Registrierung wurde erfolgreich übermittelt (ID: ${data.id}).<br>
+                    Sie erhalten in Kürze eine Bestätigung per E-Mail und WhatsApp.<br>
+                    <small style="opacity: 0.8;">تم إرسال تسجيل الحج الخاص بك بنجاح. ستتلقى تأكيداً عبر البريد الإلكتروني وواتساب.</small>
+                `;
                     successMessage.style.display = 'block';
+
+                    // Reset form and previews
                     this.reset();
-                    document.getElementById('passport-preview').style.display = 'none';
-                    document.getElementById('document-preview').style.display = 'none';
+                    document.getElementById('passport-copy-preview').style.display = 'none';
+                    document.getElementById('passport-photo-preview').style.display = 'none';
+                    document.getElementById('aufenthaltstitel-preview').style.display = 'none';
+                    document.getElementById('aufenthaltstitelSection').classList.remove('show');
+
+                    // Reset button
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '📤 Hajj-Registrierung absenden<br><small style="font-size: 0.8em; opacity: 0.9;">إرسال تسجيل الحج</small>';
+
                 } else {
-                    throw new Error(data.error || 'Unbekannter Fehler');
+                    throw new Error(data.error || 'Unbekannter Server-Fehler');
                 }
             })
             .catch(error => {
                 loading.style.display = 'none';
-                errorMessage.innerHTML = `❌ Fehler: ${error.message}`;
+                console.error('Submit Error:', error);
+
+                // ERROR - Show error message with contact info
+                let errorDetails = '';
+                if (error.message.includes('NetworkError') || error.message.includes('Failed to fetch')) {
+                    errorDetails = 'Netzwerkfehler - Bitte überprüfen Sie Ihre Internetverbindung.';
+                } else if (error.message.includes('Server Error')) {
+                    errorDetails = 'Server-Fehler - Bitte versuchen Sie es später erneut.';
+                } else {
+                    errorDetails = error.message;
+                }
+
+                errorMessage.innerHTML = `
+                ❌ <strong>Fehler beim Senden</strong><br>
+                <small style="opacity: 0.8;">خطأ في الإرسال</small><br><br>
+                <strong>Fehlerdetails:</strong> ${errorDetails}<br><br>
+                Bitte versuchen Sie es erneut oder kontaktieren Sie uns für Hilfe.<br>
+                <small style="opacity: 0.8;">يرجى المحاولة مرة أخرى أو الاتصال بنا للحصول على المساعدة.</small>
+                <div class="contact-info">
+                    <strong>📞 Support kontaktieren:</strong><br>
+                    <small>اتصل بالدعم:</small><br>
+                    Telefon: <a href="tel:+491234567890" class="phone-link">+49 123 456 7890</a><br>
+                    E-Mail: <a href="mailto:support@hajj-services.de" class="phone-link">support@hajj-services.de</a><br>
+                    WhatsApp: <a href="https://wa.me/491234567890?text=Hilfe%20bei%20Hajj%20Registration" class="phone-link" target="_blank">📱 WhatsApp Support</a>
+                </div>
+            `;
                 errorMessage.style.display = 'block';
-                console.error('Error:', error);
+
+                // Re-enable button after error
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '🔄 Erneut versuchen<br><small style="font-size: 0.8em; opacity: 0.9;">حاول مرة أخرى</small>';
             });
     });
 
@@ -435,6 +996,45 @@
     // Passport number formatting (uppercase)
     document.getElementById('passnummer').addEventListener('input', function(e) {
         e.target.value = e.target.value.toUpperCase();
+    });
+
+    // Email validation
+    document.getElementById('email').addEventListener('blur', function(e) {
+        const email = e.target.value;
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (email && !emailPattern.test(email)) {
+            e.target.setCustomValidity('Bitte geben Sie eine gültige E-Mail Adresse ein');
+        } else {
+            e.target.setCustomValidity('');
+        }
+    });
+
+    // Passport validity check (must be at least 6 months in future)
+    document.getElementById('passgueltigkeit').addEventListener('change', function(e) {
+        const selectedDate = new Date(e.target.value);
+        const sixMonthsFromNow = new Date();
+        sixMonthsFromNow.setMonth(sixMonthsFromNow.getMonth() + 6);
+
+        if (selectedDate < sixMonthsFromNow) {
+            alert('⚠️ Warnung: Ihr Pass läuft in weniger als 6 Monaten ab. Dies könnte zu Problemen führen.\n\nتحذير: ينتهي جوازك خلال أقل من 6 أشهر. قد يؤدي هذا إلى مشاكل.');
+        }
+    });
+
+    // Age validation (must be at least 18 years old)
+    document.getElementById('geburtsdatum').addEventListener('change', function(e) {
+        const birthDate = new Date(e.target.value);
+        const today = new Date();
+        const age = today.getFullYear() - birthDate.getFullYear();
+        const monthDiff = today.getMonth() - birthDate.getMonth();
+
+        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+        }
+
+        if (age < 18) {
+            alert('⚠️ Sie müssen mindestens 18 Jahre alt sein für die Hajj-Registrierung.\n\nيجب أن تكون بعمر 18 عامًا على الأقل للتسجيل في الحج.');
+            e.target.value = '';
+        }
     });
 </script>
 </body>
