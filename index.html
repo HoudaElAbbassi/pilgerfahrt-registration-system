@@ -263,9 +263,8 @@
             <p>Daten werden übermittelt...</p>
         </div>
 
-        <form name="passport-registration" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" id="passportForm">
-            <!-- Form fields start here -->
-
+        <!-- WICHTIG: Netlify Forms Attribute entfernt! -->
+        <form id="passportForm">
             <!-- Personal Information Section -->
             <div class="section-title">👤 Persönliche Informationen</div>
 
@@ -374,9 +373,10 @@
     setupImagePreview('passport-image', 'passport-preview', 'passport-img');
     setupImagePreview('document-image', 'document-preview', 'document-img');
 
-    // Form submission handling
+    // Form submission handling - FIXED für Database Function
     document.getElementById('passportForm').addEventListener('submit', function(e) {
         e.preventDefault();
+        e.stopPropagation();
 
         const loading = document.getElementById('loading');
         const successMessage = document.getElementById('successMessage');
@@ -390,24 +390,32 @@
         // Create FormData object
         const formData = new FormData(this);
 
-        // Submit to Netlify
-        fetch('/', {
+        // Submit to Netlify Function (NICHT mehr zu '/')
+        fetch('/.netlify/functions/submit-passport', {
             method: 'POST',
             body: formData
         })
             .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
                 loading.style.display = 'none';
-                if (response.ok) {
+                if (data.success) {
+                    successMessage.innerHTML = `✅ ${data.message} (ID: ${data.id})`;
                     successMessage.style.display = 'block';
                     this.reset();
                     document.getElementById('passport-preview').style.display = 'none';
                     document.getElementById('document-preview').style.display = 'none';
                 } else {
-                    throw new Error('Network response was not ok');
+                    throw new Error(data.error || 'Unbekannter Fehler');
                 }
             })
             .catch(error => {
                 loading.style.display = 'none';
+                errorMessage.innerHTML = `❌ Fehler: ${error.message}`;
                 errorMessage.style.display = 'block';
                 console.error('Error:', error);
             });
