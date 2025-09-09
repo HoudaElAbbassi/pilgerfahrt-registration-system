@@ -24,6 +24,7 @@
   "author": "Your Name",
   "license": "MIT",
   "dependencies": {
+    "dotenv": "^17.2.2",
     "pg": "^8.11.3"
   },
   "devDependencies": {
