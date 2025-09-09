@@ -205,6 +205,11 @@
             background: #e3f2fd;
         }
 
+        .file-upload-label.error {
+            border-color: #e74c3c;
+            background: #ffeaea;
+        }
+
         .file-upload-label .upload-icon {
             font-size: 2em;
             margin-bottom: 10px;
@@ -214,6 +219,20 @@
         .file-upload-label .upload-text {
             color: #2c3e50;
             font-weight: 500;
+        }
+
+        .file-error {
+            color: #e74c3c;
+            font-size: 0.9em;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .file-info {
+            color: #27ae60;
+            font-size: 0.9em;
+            margin-top: 5px;
+            display: none;
         }
 
         .preview-container {
@@ -411,6 +430,11 @@
 <body>
 <div class="container">
     <div class="header">
+        <div class="logo-upload">
+            <input type="file" id="logoUpload" accept="image/*">
+            <label for="logoUpload">📎 Logo</label>
+        </div>
+
         <div id="logoContainer">
             <img src="./logo.jpg" alt="Logo" class="logo" id="logoImage">
         </div>
@@ -446,7 +470,7 @@
             <p>Daten werden übermittelt...<br><small>جاري إرسال البيانات...</small></p>
         </div>
 
-        <form id="hajjForm">
+        <form id="hajjForm" method="POST" action="#">
             <!-- Personal Information Section -->
             <div class="section-title">
                 <div>👤 Persönliche Informationen</div>
@@ -513,117 +537,19 @@
                             <option value="italienisch">Italienisch / إيطالي</option>
                             <option value="spanisch">Spanisch / إسباني</option>
                             <option value="britisch">Britisch / بريطاني</option>
-                            <option value="irisch">Irisch / أيرلندي</option>
-                            <option value="schwedisch">Schwedisch / سويدي</option>
-                            <option value="norwegisch">Norwegisch / نرويجي</option>
-                            <option value="daenisch">Dänisch / دنماركي</option>
-                            <option value="finnisch">Finnisch / فنلندي</option>
-                            <option value="polnisch">Polnisch / بولندي</option>
-                            <option value="tschechisch">Tschechisch / تشيكي</option>
-                            <option value="ungarisch">Ungarisch / مجري</option>
-                            <option value="rumaenisch">Rumänisch / روماني</option>
-                            <option value="bulgarisch">Bulgarisch / بلغاري</option>
-                            <option value="kroatisch">Kroatisch / كرواتي</option>
-                            <option value="serbisch">Serbisch / صربي</option>
-                            <option value="bosnisch">Bosnisch / بوسني</option>
-                            <option value="albanisch">Albanisch / ألباني</option>
-                            <option value="griechisch">Griechisch / يوناني</option>
-                            <option value="portugiesisch">Portugiesisch / برتغالي</option>
-                            <option value="russisch">Russisch / روسي</option>
-                            <option value="ukrainisch">Ukrainisch / أوكراني</option>
-                        </optgroup>
-                        <optgroup label="Naher Osten / الشرق الأوسط">
                             <option value="tuerkisch">Türkisch / تركي</option>
                             <option value="syrisch">Syrisch / سوري</option>
                             <option value="irakisch">Irakisch / عراقي</option>
+                            <option value="afghanisch">Afghanisch / أفغاني</option>
+                            <option value="marokkanisch">Marokkanisch / مغربي</option>
+                            <option value="tunesisch">Tunesisch / تونسي</option>
+                            <option value="aegyptisch">Ägyptisch / مصري</option>
                             <option value="libanesisch">Libanesisch / لبناني</option>
                             <option value="jordanisch">Jordanisch / أردني</option>
                             <option value="palaestinensisch">Palästinensisch / فلسطيني</option>
-                            <option value="iranisch">Iranisch / إيراني</option>
-                            <option value="israelisch">Israelisch / إسرائيلي</option>
-                            <option value="saudi">Saudi-Arabisch / سعودي</option>
-                            <option value="emiratisch">Emiratisch / إماراتي</option>
-                            <option value="katarisch">Katarisch / قطري</option>
-                            <option value="kuwaitisch">Kuwaitisch / كويتي</option>
-                            <option value="bahrainisch">Bahrainisch / بحريني</option>
-                            <option value="omanisch">Omanisch / عماني</option>
-                            <option value="jemenitisch">Jemenitisch / يمني</option>
-                        </optgroup>
-                        <optgroup label="Afrika / أفريقيا">
-                            <option value="aegyptisch">Ägyptisch / مصري</option>
-                            <option value="marokkanisch">Marokkanisch / مغربي</option>
-                            <option value="tunesisch">Tunesisch / تونسي</option>
-                            <option value="algerisch">Algerisch / جزائري</option>
-                            <option value="libyschen">Libyscher / ليبي</option>
-                            <option value="sudanesisch">Sudanesisch / سوداني</option>
-                            <option value="aethiopisch">Äthiopisch / إثيوبي</option>
-                            <option value="eritreisch">Eritreisch / إريتري</option>
-                            <option value="somalisch">Somalisch / صومالي</option>
-                            <option value="nigerianisch">Nigerianisch / نيجيري</option>
-                            <option value="ghanaisch">Ghanaisch / غاني</option>
-                            <option value="senegalesisch">Senegalesisch / سنغالي</option>
-                            <option value="malisch">Malisch / مالي</option>
-                            <option value="gambisch">Gambisch / غامبي</option>
-                            <option value="guineisch">Guineisch / غيني</option>
-                            <option value="ivorisch">Elfenbeinküste / ساحل العاج</option>
-                            <option value="kamerunisch">Kamerunisch / كاميروني</option>
-                            <option value="kongolesisch">Kongolesisch / كونغولي</option>
-                            <option value="suedafrikanisch">Südafrikanisch / جنوب أفريقي</option>
-                            <option value="kenianisch">Kenianisch / كيني</option>
-                            <option value="tansanisch">Tansanisch / تنزاني</option>
-                        </optgroup>
-                        <optgroup label="Asien / آسيا">
-                            <option value="afghanisch">Afghanisch / أفغاني</option>
                             <option value="pakistanisch">Pakistanisch / باكستاني</option>
                             <option value="indisch">Indisch / هندي</option>
                             <option value="bangladeschisch">Bangladeschisch / بنغلاديشي</option>
-                            <option value="sri_lankisch">Sri Lankisch / سريلانكي</option>
-                            <option value="chinesisch">Chinesisch / صيني</option>
-                            <option value="japanisch">Japanisch / ياباني</option>
-                            <option value="koreanisch">Koreanisch / كوري</option>
-                            <option value="thailaendisch">Thailändisch / تايلاندي</option>
-                            <option value="vietnamesisch">Vietnamesisch / فيتنامي</option>
-                            <option value="philippinisch">Philippinisch / فلبيني</option>
-                            <option value="indonesisch">Indonesisch / إندونيسي</option>
-                            <option value="malaysisch">Malaysisch / ماليزي</option>
-                            <option value="singapurisch">Singapurisch / سنغافوري</option>
-                            <option value="burmesisch">Burmesisch / بورمي</option>
-                            <option value="kambodschanisch">Kambodschanisch / كمبودي</option>
-                            <option value="laotisch">Laotisch / لاوسي</option>
-                            <option value="mongolisch">Mongolisch / منغولي</option>
-                            <option value="nepalesisch">Nepalesisch / نيبالي</option>
-                            <option value="bhutanisch">Bhutanisch / بوتاني</option>
-                            <option value="usbekisch">Usbekisch / أوزبكي</option>
-                            <option value="kasachisch">Kasachisch / كازاخي</option>
-                            <option value="kirgisisch">Kirgisisch / قيرغيزي</option>
-                            <option value="tadschikisch">Tadschikisch / طاجيكي</option>
-                            <option value="turkmenisch">Turkmenisch / تركماني</option>
-                            <option value="aserbaidschanisch">Aserbaidschanisch / أذربيجاني</option>
-                            <option value="armenisch">Armenisch / أرمني</option>
-                            <option value="georgisch">Georgisch / جورجي</option>
-                        </optgroup>
-                        <optgroup label="Nord- & Südamerika / أمريكا الشمالية والجنوبية">
-                            <option value="amerikanisch">Amerikanisch / أمريكي</option>
-                            <option value="kanadisch">Kanadisch / كندي</option>
-                            <option value="mexikanisch">Mexikanisch / مكسيكي</option>
-                            <option value="brasilianisch">Brasilianisch / برازيلي</option>
-                            <option value="argentinisch">Argentinisch / أرجنتيني</option>
-                            <option value="chilenisch">Chilenisch / تشيلي</option>
-                            <option value="kolumbianisch">Kolumbianisch / كولومبي</option>
-                            <option value="peruanisch">Peruanisch / بيروفي</option>
-                            <option value="venezolanisch">Venezolanisch / فنزويلي</option>
-                            <option value="ecuadorianisch">Ecuadorianisch / إكوادوري</option>
-                            <option value="bolivianisch">Bolivianisch / بوليفي</option>
-                            <option value="uruguayisch">Uruguayisch / أوروغوائي</option>
-                            <option value="paraguayisch">Paraguayisch / باراغوائي</option>
-                        </optgroup>
-                        <optgroup label="Ozeanien / أوقيانوسيا">
-                            <option value="australisch">Australisch / أسترالي</option>
-                            <option value="neuseelaendisch">Neuseeländisch / نيوزيلندي</option>
-                        </optgroup>
-                        <optgroup label="Sonstige / أخرى">
-                            <option value="staatenlos">Staatenlos / عديم الجنسية</option>
-                            <option value="ungeklaert">Ungeklärt / غير محدد</option>
                             <option value="sonstige">Sonstige / أخرى</option>
                         </optgroup>
                     </select>
@@ -683,17 +609,26 @@
                         <div class="label-arabic">تحميل تصريح الإقامة</div>
                     </div>
                     <div class="file-upload">
-                        <input type="file" id="aufenthaltstitel-image" name="aufenthaltstitel-image" accept="image/*">
+                        <input type="file" id="aufenthaltstitel-image" name="aufenthaltstitel-image" accept="image/*,application/pdf">
                         <label for="aufenthaltstitel-image" class="file-upload-label">
                             <div>
                                 <div class="upload-icon">📄</div>
                                 <div class="upload-text">Aufenthaltstitel hochladen<br><small style="color: #7f8c8d;">تحميل تصريح الإقامة</small></div>
-                                <small>Beide Seiten erforderlich<br>الوجهين مطلوبان</small>
+                                <small>JPG, PNG, PDF • Max. 10MB<br>الوجهين مطلوبان • حد أقصى 10 ميجابايت</small>
                             </div>
                         </label>
                     </div>
+                    <div class="file-error" id="aufenthaltstitel-error"></div>
+                    <div class="file-info" id="aufenthaltstitel-info"></div>
                     <div class="preview-container" id="aufenthaltstitel-preview">
                         <img class="image-preview" id="aufenthaltstitel-img">
+                        <div class="pdf-preview" id="aufenthaltstitel-pdf" style="display: none;">
+                            <div style="background: #f8f9fa; border: 2px solid #dee2e6; border-radius: 10px; padding: 20px; text-align: center;">
+                                <div style="font-size: 3em; margin-bottom: 10px;">📄</div>
+                                <div style="font-weight: 600; color: #2c3e50;">PDF Dokument</div>
+                                <div style="color: #7f8c8d; margin-top: 5px;" id="aufenthaltstitel-pdf-name"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -711,17 +646,26 @@
                         <div class="label-arabic">نسخة من جواز السفر</div>
                     </div>
                     <div class="file-upload">
-                        <input type="file" id="passport-copy" name="passport-copy" accept="image/*" required>
+                        <input type="file" id="passport-copy" name="passport-copy" accept="image/*,application/pdf" required>
                         <label for="passport-copy" class="file-upload-label">
                             <div>
                                 <div class="upload-icon">📋</div>
                                 <div class="upload-text">Reisepass Kopie<br><small style="color: #7f8c8d;">نسخة جواز السفر</small></div>
-                                <small>Alle relevanten Seiten<br>جميع الصفحات ذات الصلة</small>
+                                <small>JPG, PNG, PDF • Max. 10MB<br>جميع الصفحات ذات الصلة • حد أقصى 10 ميجابايت</small>
                             </div>
                         </label>
                     </div>
+                    <div class="file-error" id="passport-copy-error"></div>
+                    <div class="file-info" id="passport-copy-info"></div>
                     <div class="preview-container" id="passport-copy-preview">
                         <img class="image-preview" id="passport-copy-img">
+                        <div class="pdf-preview" id="passport-copy-pdf" style="display: none;">
+                            <div style="background: #f8f9fa; border: 2px solid #dee2e6; border-radius: 10px; padding: 20px; text-align: center;">
+                                <div style="font-size: 3em; margin-bottom: 10px;">📄</div>
+                                <div style="font-weight: 600; color: #2c3e50;">PDF Dokument</div>
+                                <div style="color: #7f8c8d; margin-top: 5px;" id="passport-copy-pdf-name"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -731,17 +675,26 @@
                         <div class="label-arabic">صورة جواز سفر بيومترية</div>
                     </div>
                     <div class="file-upload">
-                        <input type="file" id="passport-photo" name="passport-photo" accept="image/*" required>
+                        <input type="file" id="passport-photo" name="passport-photo" accept="image/*,application/pdf" required>
                         <label for="passport-photo" class="file-upload-label">
                             <div>
                                 <div class="upload-icon">📷</div>
                                 <div class="upload-text">Biometrisches Passbild<br><small style="color: #7f8c8d;">صورة بيومترية</small></div>
-                                <small>Weißer Hintergrund, 35x45mm<br>خلفية بيضاء، 35x45 ملم</small>
+                                <small>JPG, PNG, PDF • Max. 10MB<br>خلفية بيضاء، 35x45 ملم • حد أقصى 10 ميجابايت</small>
                             </div>
                         </label>
                     </div>
+                    <div class="file-error" id="passport-photo-error"></div>
+                    <div class="file-info" id="passport-photo-info"></div>
                     <div class="preview-container" id="passport-photo-preview">
                         <img class="image-preview" id="passport-photo-img">
+                        <div class="pdf-preview" id="passport-photo-pdf" style="display: none;">
+                            <div style="background: #f8f9fa; border: 2px solid #dee2e6; border-radius: 10px; padding: 20px; text-align: center;">
+                                <div style="font-size: 3em; margin-bottom: 10px;">📄</div>
+                                <div style="font-weight: 600; color: #2c3e50;">PDF Dokument</div>
+                                <div style="color: #7f8c8d; margin-top: 5px;" id="passport-photo-pdf-name"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -773,7 +726,7 @@
                 </div>
             </div>
 
-            <button type="submit" class="submit-btn">
+            <button type="button" class="submit-btn" id="submitButton">
                 📤 Hajj-Registrierung absenden<br><small style="font-size: 0.8em; opacity: 0.9;">إرسال تسجيل الحج</small>
             </button>
         </form>
@@ -781,6 +734,28 @@
 </div>
 
 <script>
+    // Early form submission prevention
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('hajjForm');
+
+        // Add multiple event listeners to catch all submission attempts
+        ['submit', 'formdata'].forEach(eventType => {
+            form.addEventListener(eventType, function(e) {
+                console.log('Form event intercepted:', eventType);
+                e.preventDefault();
+                e.stopPropagation();
+                e.stopImmediatePropagation();
+                return false;
+            }, true); // Use capture phase
+        });
+
+        // Override form submission method
+        form.submit = function() {
+            console.log('Direct form.submit() call blocked');
+            return false;
+        };
+    });
+
     // Logo upload functionality
     document.getElementById('logoUpload').addEventListener('change', function(e) {
         const file = e.target.files[0];
@@ -820,42 +795,132 @@
         });
     });
 
-    // Image preview functionality
-    function setupImagePreview(inputId, previewId, imgId) {
+    // File type and size validation function
+    function validateFile(file, inputElement, errorElementId, infoElementId) {
+        const maxSize = 10 * 1024 * 1024; // 10MB in bytes
+        const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp', 'application/pdf'];
+        const errorElement = document.getElementById(errorElementId);
+        const infoElement = document.getElementById(infoElementId);
+        const label = inputElement.parentElement.querySelector('.file-upload-label');
+
+        // Reset previous states
+        errorElement.style.display = 'none';
+        infoElement.style.display = 'none';
+        label.classList.remove('error');
+
+        // Check file type
+        if (!allowedTypes.includes(file.type)) {
+            errorElement.innerHTML = `
+                ❌ Ungültiger Dateityp: ${file.type}<br>
+                Erlaubt: JPG, PNG, GIF, WebP, PDF<br>
+                <small>نوع ملف غير صحيح. المسموح: JPG, PNG, GIF, WebP, PDF</small>
+            `;
+            errorElement.style.display = 'block';
+            label.classList.add('error');
+            inputElement.value = '';
+            return false;
+        }
+
+        // Check file size
+        if (file.size > maxSize) {
+            const sizeMB = (file.size / (1024 * 1024)).toFixed(2);
+            errorElement.innerHTML = `
+                ❌ Datei zu groß: ${sizeMB}MB (Max: 10MB)<br>
+                <small>الملف كبير جداً: ${sizeMB} ميجابايت (الحد الأقصى: 10 ميجابايت)</small>
+            `;
+            errorElement.style.display = 'block';
+            label.classList.add('error');
+            inputElement.value = '';
+            return false;
+        } else {
+            const sizeMB = (file.size / (1024 * 1024)).toFixed(2);
+            const fileTypeText = file.type === 'application/pdf' ? 'PDF' : 'Bild';
+            const fileTypeArabic = file.type === 'application/pdf' ? 'PDF' : 'صورة';
+            infoElement.innerHTML = `
+                ✅ ${fileTypeText} akzeptiert: ${file.name} (${sizeMB}MB)<br>
+                <small>تم قبول ${fileTypeArabic}: ${file.name} (${sizeMB} ميجابايت)</small>
+            `;
+            infoElement.style.display = 'block';
+            return true;
+        }
+    }
+
+    // Enhanced preview functionality with PDF support
+    function setupFilePreview(inputId, previewId, imgId) {
         const input = document.getElementById(inputId);
         const preview = document.getElementById(previewId);
         const img = document.getElementById(imgId);
+        const pdfPreview = document.getElementById(inputId + '-pdf');
+        const pdfName = document.getElementById(inputId + '-pdf-name');
+        const errorElementId = inputId + '-error';
+        const infoElementId = inputId + '-info';
 
         input.addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    img.src = e.target.result;
+                // Validate file first
+                if (!validateFile(file, input, errorElementId, infoElementId)) {
+                    preview.style.display = 'none';
+                    return;
+                }
+
+                // Show preview based on file type
+                if (file.type === 'application/pdf') {
+                    // PDF Preview
+                    img.style.display = 'none';
+                    if (pdfPreview && pdfName) {
+                        pdfName.textContent = file.name;
+                        pdfPreview.style.display = 'block';
+                    }
                     preview.style.display = 'block';
-                };
-                reader.readAsDataURL(file);
+                } else {
+                    // Image Preview
+                    if (pdfPreview) {
+                        pdfPreview.style.display = 'none';
+                    }
+                    img.style.display = 'block';
+
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        img.src = e.target.result;
+                        preview.style.display = 'block';
+                    };
+                    reader.readAsDataURL(file);
+                }
             }
         });
     }
 
-    // Setup previews for all image inputs
-    setupImagePreview('passport-copy', 'passport-copy-preview', 'passport-copy-img');
-    setupImagePreview('passport-photo', 'passport-photo-preview', 'passport-photo-img');
-    setupImagePreview('aufenthaltstitel-image', 'aufenthaltstitel-preview', 'aufenthaltstitel-img');
+    // Setup previews for all file inputs with PDF support
+    setupFilePreview('passport-copy', 'passport-copy-preview', 'passport-copy-img');
+    setupFilePreview('passport-photo', 'passport-photo-preview', 'passport-photo-img');
+    setupFilePreview('aufenthaltstitel-image', 'aufenthaltstitel-preview', 'aufenthaltstitel-img');
 
-    // Form submission handling with file size validation
-    document.getElementById('hajjForm').addEventListener('submit', function(e) {
+    // Button click handler (safer than form submit)
+    document.getElementById('submitButton').addEventListener('click', function(e) {
         e.preventDefault();
         e.stopPropagation();
 
-        const submitBtn = document.querySelector('.submit-btn');
+        // Call the form submission logic
+        handleFormSubmission();
+    });
+
+    // Separate function for form submission logic
+    function handleFormSubmission() {
+        const form = document.getElementById('hajjForm');
+        const submitBtn = document.getElementById('submitButton');
         const loading = document.getElementById('loading');
         const successMessage = document.getElementById('successMessage');
         const errorMessage = document.getElementById('errorMessage');
 
         // Prevent double submission
         if (submitBtn.disabled) {
+            return;
+        }
+
+        // Basic form validation
+        if (!form.checkValidity()) {
+            form.reportValidity();
             return;
         }
 
@@ -899,7 +964,7 @@
         loading.style.display = 'block';
 
         // Create FormData object
-        const formData = new FormData(this);
+        const formData = new FormData(form);
 
         // Submit to Netlify Function
         fetch('/.netlify/functions/submit-hajj-registration', {
@@ -927,7 +992,7 @@
                     successMessage.style.display = 'block';
 
                     // Reset form and previews
-                    this.reset();
+                    form.reset();
                     document.getElementById('passport-copy-preview').style.display = 'none';
                     document.getElementById('passport-photo-preview').style.display = 'none';
                     document.getElementById('aufenthaltstitel-preview').style.display = 'none';
@@ -975,6 +1040,19 @@
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = '🔄 Erneut versuchen<br><small style="font-size: 0.8em; opacity: 0.9;">حاول مرة أخرى</small>';
             });
+    }
+
+    // Form submission event (backup - should not trigger)
+    document.getElementById('hajjForm').addEventListener('submit', function(e) {
+        console.log('Form submit event triggered - this should not happen');
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+
+        // Call the same handler as backup
+        handleFormSubmission();
+
+        return false;
     });
 
     // Phone number formatting
@@ -1019,7 +1097,7 @@
     document.getElementById('geburtsdatum').addEventListener('change', function(e) {
         const birthDate = new Date(e.target.value);
         const today = new Date();
-        const age = today.getFullYear() - birthDate.getFullYear();
+        let age = today.getFullYear() - birthDate.getFullYear();
         const monthDiff = today.getMonth() - birthDate.getMonth();
 
         if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
