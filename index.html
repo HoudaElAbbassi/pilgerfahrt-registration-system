@@ -966,6 +966,13 @@
         // Create FormData object
         const formData = new FormData(form);
 
+        // Remove empty aufenthaltstitel file if passart is not 'auslaendisch'
+        const passart = formData.get('passart');
+        if (passart !== 'auslaendisch') {
+            formData.delete('aufenthaltstitel-image');
+            console.log('Removed aufenthaltstitel-image from FormData (not required for passart:', passart, ')');
+        }
+
         // Submit to Netlify Function
         fetch('/.netlify/functions/submit-hajj-registration', {
             method: 'POST',

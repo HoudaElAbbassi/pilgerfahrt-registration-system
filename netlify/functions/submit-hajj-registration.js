@@ -107,29 +107,41 @@ exports.handler = async (event, context) => {
             requiredFiles.push('aufenthaltstitel-image');
         }
 
-        const missingFiles = requiredFiles.filter(fileName => !formData.files[fileName]);
+        // Filter out empty/invalid files
+        const validFiles = {};
+        Object.entries(formData.files).forEach(([key, fileData]) => {
+            // Only include files that have actual content and valid filename
+            if (fileData.data && fileData.data.length > 0 && fileData.filename && fileData.filename !== 'undefined') {
+                validFiles[key] = fileData;
+            }
+        });
+
+        const missingFiles = requiredFiles.filter(fileName => !validFiles[fileName]);
 
         if (missingFiles.length > 0) {
             console.log('Missing required files:', missingFiles);
+            console.log('Valid files found:', Object.keys(validFiles));
             return {
                 statusCode: 400,
                 headers,
                 body: JSON.stringify({
                     error: 'Missing required files',
                     missingFiles,
-                    receivedFiles: Object.keys(formData.files)
+                    receivedFiles: Object.keys(formData.files),
+                    validFiles: Object.keys(validFiles),
+                    passartRequirement: `Aufenthaltstitel ${isAufenthaltstitelRequired ? 'required' : 'not required'} for passart: ${formData.fields.passart}`
                 }),
             };
         }
 
-        // Validate file sizes and types
+        // Validate file sizes and types (only for valid files)
         const maxFileSize = 10 * 1024 * 1024; // 10MB
         const allowedMimeTypes = [
             'image/jpeg', 'image/jpg', 'image/png', 'image/gif',
             'image/webp', 'application/pdf'
         ];
 
-        for (const [fileName, fileData] of Object.entries(formData.files)) {
+        for (const [fileName, fileData] of Object.entries(validFiles)) {
             if (fileData.data.length > maxFileSize) {
                 const sizeMB = (fileData.data.length / (1024 * 1024)).toFixed(2);
                 return {
@@ -158,10 +170,10 @@ exports.handler = async (event, context) => {
             }
         }
 
-        // Process files for database storage
-        const passportCopy = formData.files['passport-copy'];
-        const passportPhoto = formData.files['passport-photo'];
-        const aufenthaltstitel = formData.files['aufenthaltstitel-image'];
+        // Process files for database storage (only valid files)
+        const passportCopy = validFiles['passport-copy'];
+        const passportPhoto = validFiles['passport-photo'];
+        const aufenthaltstitel = validFiles['aufenthaltstitel-image']; // Will be undefined if not provided
 
         const passportCopyBase64 = passportCopy ?
             passportCopy.data.toString('base64') : null;
@@ -185,10 +197,10 @@ exports.handler = async (event, context) => {
                 passport_copy_mimetype, passport_photo_mimetype, aufenthaltstitel_mimetype,
                 created_at
             ) VALUES (
-                $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, 
-                $11, $12, $13, $14, $15, $16, $17, $18, $19, NOW()
-            )
-            RETURNING id;
+                         $1, $2, $3, $4, $5, $6, $7, $8, $9, $10,
+                         $11, $12, $13, $14, $15, $16, $17, $18, $19, NOW()
+                     )
+                RETURNING id;
         `;
 
         const values = [
