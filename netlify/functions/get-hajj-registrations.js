@@ -1,4 +1,4 @@
-// netlify/functions/get-registrations.js - OPTIMIZED VERSION
+// netlify/functions/get-hajj-registrations.js
 const { Pool } = require('pg');
 
 const pool = new Pool({
@@ -7,7 +7,7 @@ const pool = new Pool({
 });
 
 exports.handler = async (event, context) => {
-    console.log('=== OPTIMIZED GET REGISTRATIONS START ===');
+    console.log('=== GET HAJJ REGISTRATIONS START ===');
 
     const headers = {
         'Access-Control-Allow-Origin': '*',
@@ -31,37 +31,42 @@ exports.handler = async (event, context) => {
         // Parse query parameters
         const queryParams = event.queryStringParameters || {};
         const includeImages = queryParams.includeImages === 'true';
-        const limit = parseInt(queryParams.limit) || 50;
+        const limit = parseInt(queryParams.limit) || 100;
         const offset = parseInt(queryParams.offset) || 0;
 
         console.log('Query params:', { includeImages, limit, offset });
 
-        // First, get basic registrations without images (fast query)
-        let query = `
-            SELECT 
-                id, vorname, nachname, telefon, passnummer, 
-                gueltigkeit, ausstellungsort,
-                passport_image_filename, document_image_filename,
-                CASE WHEN passport_image IS NOT NULL THEN true ELSE false END as has_passport_image,
-                CASE WHEN document_image IS NOT NULL THEN true ELSE false END as has_document_image,
-                created_at, updated_at
-            FROM passport_registrations 
-            ORDER BY created_at DESC
-            LIMIT $1 OFFSET $2
-        `;
-
+        // Build query based on whether images are requested
+        let query = '';
         let values = [limit, offset];
 
-        // If images are specifically requested, include them (slower query)
         if (includeImages) {
+            // Include images (slower but complete data)
+            query = `
+                SELECT
+                    id, vorname, nachname, email, telefon, geburtsdatum, nationalitaet,
+                    passart, passnummer, passgueltigkeit, nusuk_registriert,
+                    passport_copy, passport_photo, aufenthaltstitel_image,
+                    passport_copy_filename, passport_photo_filename, aufenthaltstitel_filename,
+                    passport_copy_mimetype, passport_photo_mimetype, aufenthaltstitel_mimetype,
+                    created_at, updated_at
+                FROM hajj_registrations
+                ORDER BY created_at DESC
+                    LIMIT $1 OFFSET $2
+            `;
+        } else {
+            // Basic data without images (faster)
             query = `
                 SELECT 
-                    id, vorname, nachname, telefon, passnummer, 
-                    gueltigkeit, ausstellungsort,
-                    passport_image, document_image,
-                    passport_image_filename, document_image_filename,
+                    id, vorname, nachname, email, telefon, geburtsdatum, nationalitaet,
+                    passart, passnummer, passgueltigkeit, nusuk_registriert,
+                    passport_copy_filename, passport_photo_filename, aufenthaltstitel_filename,
+                    passport_copy_mimetype, passport_photo_mimetype, aufenthaltstitel_mimetype,
+                    CASE WHEN passport_copy IS NOT NULL THEN true ELSE false END as has_passport_copy,
+                    CASE WHEN passport_photo IS NOT NULL THEN true ELSE false END as has_passport_photo,
+                    CASE WHEN aufenthaltstitel_image IS NOT NULL THEN true ELSE false END as has_aufenthaltstitel,
                     created_at, updated_at
-                FROM passport_registrations 
+                FROM hajj_registrations 
                 ORDER BY created_at DESC
                 LIMIT $1 OFFSET $2
             `;
@@ -71,7 +76,7 @@ exports.handler = async (event, context) => {
         const result = await pool.query(query, values);
 
         // Get total count
-        const countResult = await pool.query('SELECT COUNT(*) as total FROM passport_registrations');
+        const countResult = await pool.query('SELECT COUNT(*) as total FROM hajj_registrations');
         const totalCount = parseInt(countResult.rows[0].total);
 
         console.log(`Found ${result.rows.length} registrations (${totalCount} total)`);
@@ -80,14 +85,16 @@ exports.handler = async (event, context) => {
         const registrations = result.rows.map(row => ({
             ...row,
             // Convert dates to ISO strings for better JSON handling
-            created_at: row.created_at.toISOString(),
-            updated_at: row.updated_at.toISOString(),
-            gueltigkeit: row.gueltigkeit.toISOString().split('T')[0], // Just date part
+            created_at: row.created_at ? row.created_at.toISOString() : null,
+            updated_at: row.updated_at ? row.updated_at.toISOString() : null,
+            geburtsdatum: row.geburtsdatum ? row.geburtsdatum.toISOString().split('T')[0] : null,
+            passgueltigkeit: row.passgueltigkeit ? row.passgueltigkeit.toISOString().split('T')[0] : null,
 
-            // Add image indicators if not including full images
+            // Add null values for images if not included
             ...(!includeImages && {
-                passport_image: null,
-                document_image: null
+                passport_copy: null,
+                passport_photo: null,
+                aufenthaltstitel_image: null
             })
         }));
 
@@ -118,7 +125,7 @@ exports.handler = async (event, context) => {
             headers,
             body: JSON.stringify({
                 success: false,
-                error: 'Failed to fetch registrations',
+                error: 'Failed to fetch Hajj registrations',
                 details: error.message
             }),
         };

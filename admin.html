@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - Passport Registrations</title>
+    <title>Admin Dashboard - Hajj Registrations</title>
     <style>
         * {
             margin: 0;
@@ -342,7 +342,7 @@
 <div class="container">
     <div class="header">
         <h1>🛂 Admin Dashboard</h1>
-        <p>Passport Registration Management System</p>
+        <p>Hajj Registration Management System</p>
     </div>
 
     <div class="dashboard-container">
@@ -387,12 +387,14 @@
                 <tr>
                     <th>ID</th>
                     <th>Name</th>
+                    <th>Email</th>
                     <th>Phone</th>
                     <th>Passport Number</th>
-                    <th>Validity</th>
-                    <th>Issued At</th>
-                    <th>Passport Image</th>
-                    <th>Document Image</th>
+                    <th>Passport Validity</th>
+                    <th>Passport Type</th>
+                    <th>Passport Copy</th>
+                    <th>Passport Photo</th>
+                    <th>Aufenthaltstitel</th>
                     <th>Created</th>
                     <th>Actions</th>
                 </tr>
@@ -449,7 +451,8 @@
             document.getElementById('error').style.display = 'none';
             document.getElementById('tableContainer').style.display = 'none';
 
-            const response = await fetch('/.netlify/functions/get-registrations');
+            // Use the correct function name for Hajj registrations
+            const response = await fetch('/.netlify/functions/get-hajj-registrations?includeImages=true');
 
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
@@ -486,7 +489,7 @@
         }).length;
 
         const withImages = allRegistrations.filter(reg =>
-            reg.passport_image || reg.document_image
+            reg.passport_copy || reg.passport_photo || reg.aufenthaltstitel_image
         ).length;
 
         document.getElementById('totalRegistrations').textContent = total;
@@ -502,6 +505,7 @@
             filteredRegistrations = allRegistrations.filter(reg =>
                 reg.vorname.toLowerCase().includes(term) ||
                 reg.nachname.toLowerCase().includes(term) ||
+                reg.email.toLowerCase().includes(term) ||
                 reg.telefon.toLowerCase().includes(term) ||
                 reg.passnummer.toLowerCase().includes(term)
             );
@@ -514,45 +518,76 @@
         tbody.innerHTML = '';
 
         if (filteredRegistrations.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="10" style="text-align: center; padding: 40px;">No registrations found</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="12" style="text-align: center; padding: 40px;">No registrations found</td></tr>';
             return;
         }
 
         filteredRegistrations.forEach(reg => {
             const row = document.createElement('tr');
             row.innerHTML = `
-                    <td>${reg.id}</td>
-                    <td><strong>${reg.vorname} ${reg.nachname}</strong></td>
-                    <td>${reg.telefon}</td>
-                    <td>${reg.passnummer}</td>
-                    <td>${formatDate(reg.gueltigkeit)}</td>
-                    <td>${reg.ausstellungsort}</td>
-                    <td>${renderImageCell(reg.passport_image, reg.passport_image_filename, 'passport', reg.id)}</td>
-                    <td>${renderImageCell(reg.document_image, reg.document_image_filename, 'document', reg.id)}</td>
-                    <td>${formatDateTime(reg.created_at)}</td>
-                    <td>
-                        <button class="btn btn-danger" onclick="deleteRegistration(${reg.id})">🗑️ Delete</button>
-                    </td>
-                `;
+                <td>${reg.id}</td>
+                <td><strong>${reg.vorname} ${reg.nachname}</strong></td>
+                <td>${reg.email}</td>
+                <td>${reg.telefon}</td>
+                <td>${reg.passnummer}</td>
+                <td>${formatDate(reg.passgueltigkeit)}</td>
+                <td>${translatePassportType(reg.passart)}</td>
+                <td>${renderImageCell(reg.passport_copy, reg.passport_copy_filename, 'passport-copy', reg.id)}</td>
+                <td>${renderImageCell(reg.passport_photo, reg.passport_photo_filename, 'passport-photo', reg.id)}</td>
+                <td>${renderImageCell(reg.aufenthaltstitel_image, reg.aufenthaltstitel_filename, 'aufenthaltstitel', reg.id)}</td>
+                <td>${formatDateTime(reg.created_at)}</td>
+                <td>
+                    <button class="btn btn-danger" onclick="deleteRegistration(${reg.id})">🗑️ Delete</button>
+                </td>
+            `;
             tbody.appendChild(row);
         });
     }
 
+    function translatePassportType(passart) {
+        const translations = {
+            'europaeisch': 'EU Pass',
+            'blau': 'Blauer Ausweis',
+            'auslaendisch': 'Ausl. Pass + Aufenthalt'
+        };
+        return translations[passart] || passart;
+    }
+
     function renderImageCell(imageData, filename, type, id) {
         if (imageData) {
-            return `
+            // Create proper data URL for image display
+            const mimeType = filename && filename.toLowerCase().endsWith('.pdf') ? 'application/pdf' : 'image/jpeg';
+            const dataUrl = `data:${mimeType};base64,${imageData}`;
+
+            if (mimeType === 'application/pdf') {
+                return `
                     <div style="text-align: center;">
-                        <img src="data:image/jpeg;base64,${imageData}"
+                        <div style="background: #f8f9fa; border: 2px solid #dee2e6; border-radius: 8px; padding: 10px; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; cursor: pointer;"
+                             onclick="downloadImage('${imageData}', '${filename || type + '_' + id}', '${mimeType}')">
+                            <span style="font-size: 20px;">📄</span>
+                        </div>
+                        <br>
+                        <button class="btn btn-success" style="margin-top: 5px;"
+                                onclick="downloadImage('${imageData}', '${filename || type + '_' + id}', '${mimeType}')">
+                            💾 PDF
+                        </button>
+                    </div>
+                `;
+            } else {
+                return `
+                    <div style="text-align: center;">
+                        <img src="${dataUrl}"
                              class="image-thumbnail"
-                             onclick="showFullImage(this.src, '${filename || type}')"
+                             onclick="showFullImage('${dataUrl}', '${filename || type}')"
                              alt="${type} image">
                         <br>
                         <button class="btn btn-success" style="margin-top: 5px;"
-                                onclick="downloadImage('${imageData}', '${filename || type + '_' + id}')">
+                                onclick="downloadImage('${imageData}', '${filename || type + '_' + id}', '${mimeType}')">
                             💾 Download
                         </button>
                     </div>
                 `;
+            }
         } else {
             return '<div class="no-image">No Image</div>';
         }
@@ -566,13 +601,43 @@
         modalImg.alt = title;
     }
 
-    function downloadImage(base64Data, filename) {
-        const link = document.createElement('a');
-        link.href = `data:image/jpeg;base64,${base64Data}`;
-        link.download = filename + '.jpg';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+    function downloadImage(base64Data, filename, mimeType) {
+        try {
+            // Create blob from base64 data
+            const byteCharacters = atob(base64Data);
+            const byteNumbers = new Array(byteCharacters.length);
+
+            for (let i = 0; i < byteCharacters.length; i++) {
+                byteNumbers[i] = byteCharacters.charCodeAt(i);
+            }
+
+            const byteArray = new Uint8Array(byteNumbers);
+            const blob = new Blob([byteArray], { type: mimeType });
+
+            // Create download link
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+
+            // Determine file extension
+            let extension = '.jpg';
+            if (mimeType === 'application/pdf') {
+                extension = '.pdf';
+            } else if (mimeType === 'image/png') {
+                extension = '.png';
+            }
+
+            link.download = (filename || 'download') + extension;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            // Clean up object URL
+            URL.revokeObjectURL(link.href);
+
+        } catch (error) {
+            console.error('Download error:', error);
+            alert('Fehler beim Download: ' + error.message);
+        }
     }
 
     function formatDate(dateString) {
@@ -588,17 +653,19 @@
     }
 
     function exportToCSV() {
-        const headers = ['ID', 'Vorname', 'Nachname', 'Telefon', 'Passnummer', 'Gültigkeit', 'Ausstellungsort', 'Erstellt'];
+        const headers = ['ID', 'Vorname', 'Nachname', 'Email', 'Telefon', 'Passnummer', 'Pass Gültigkeit', 'Pass Art', 'Nationalität', 'Erstellt'];
         const csvContent = [
             headers.join(','),
             ...filteredRegistrations.map(reg => [
                 reg.id,
                 `"${reg.vorname}"`,
                 `"${reg.nachname}"`,
+                `"${reg.email}"`,
                 `"${reg.telefon}"`,
                 `"${reg.passnummer}"`,
-                reg.gueltigkeit,
-                `"${reg.ausstellungsort}"`,
+                reg.passgueltigkeit,
+                `"${translatePassportType(reg.passart)}"`,
+                `"${reg.nationalitaet}"`,
                 reg.created_at
             ].join(','))
         ].join('\n');
@@ -607,7 +674,7 @@
         const link = document.createElement('a');
         const url = URL.createObjectURL(blob);
         link.setAttribute('href', url);
-        link.setAttribute('download', `passport_registrations_${new Date().toISOString().split('T')[0]}.csv`);
+        link.setAttribute('download', `hajj_registrations_${new Date().toISOString().split('T')[0]}.csv`);
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -619,7 +686,7 @@
         }
 
         try {
-            const response = await fetch(`/.netlify/functions/delete-registration`, {
+            const response = await fetch(`/.netlify/functions/delete-hajj-registration`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
