@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hajj Passport Registration Form - DEBUG</title>
+    <title>Hajj Passport Registration Form</title>
     <style>
         * {
             margin: 0;
@@ -175,6 +175,22 @@
             background: #e3f2fd;
         }
 
+        .file-upload-label.error {
+            border-color: #e74c3c;
+            background: #ffeaea;
+        }
+
+        .file-upload-label .upload-icon {
+            font-size: 2em;
+            margin-bottom: 10px;
+            color: #3498db;
+        }
+
+        .file-upload-label .upload-text {
+            color: #2c3e50;
+            font-weight: 500;
+        }
+
         .file-error {
             color: #e74c3c;
             font-size: 0.9em;
@@ -260,6 +276,10 @@
             box-shadow: 0 15px 30px rgba(52, 152, 219, 0.4);
         }
 
+        .submit-btn:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
         .submit-btn:disabled {
             background: #95a5a6;
             cursor: not-allowed;
@@ -321,15 +341,27 @@
             100% { transform: rotate(360deg); }
         }
 
-        .debug-info {
-            background: #fff3cd;
-            border: 1px solid #ffeaa7;
-            color: #856404;
-            padding: 15px;
+        .contact-info {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
             border-radius: 10px;
-            margin-bottom: 20px;
-            font-family: monospace;
-            font-size: 0.9em;
+            padding: 15px;
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        .contact-info strong {
+            color: #2c3e50;
+        }
+
+        .phone-link {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .phone-link:hover {
+            text-decoration: underline;
         }
 
         @media (max-width: 768px) {
@@ -367,26 +399,35 @@
             <img src="./logo.jpg" alt="Logo" class="logo" id="logoImage" onerror="this.style.display='none'">
         </div>
 
-        <h1>Hajj Anmeldung - DEBUG<br><small style="font-size: 0.6em; opacity: 0.9;">تسجيل الحج</small></h1>
-        <p>Debug-Version für Fehleranalyse<br><small style="opacity: 0.8;">نسخة التصحيح لتحليل الأخطاء</small></p>
+        <h1>Hajj Anmeldung<br><small style="font-size: 0.6em; opacity: 0.9;">تسجيل الحج</small></h1>
+        <p>Bitte füllen Sie alle Felder sorgfältig aus<br><small style="opacity: 0.8;">يرجى ملء جميع الحقول بعناية</small></p>
     </div>
 
     <div class="form-container">
-        <div class="debug-info" id="debugInfo">
-            🐛 DEBUG-INFO: JavaScript geladen. Warte auf Benutzeraktion...
-        </div>
-
         <div class="success-message" id="successMessage">
-            ✅ <strong>Erfolgreich versendet!</strong>
+            ✅ <strong>Erfolgreich versendet!</strong><br>
+            <small style="opacity: 0.8;">تم الإرسال بنجاح!</small><br><br>
+            Ihre Hajj-Registrierung wurde erfolgreich übermittelt. Wir werden uns in Kürze melden.<br>
+            <small style="opacity: 0.8;">تم إرسال تسجيل الحج الخاص بك بنجاح. ستتلقى تأكيداً قريباً.</small>
         </div>
 
         <div class="error-message" id="errorMessage">
-            ❌ <strong>Fehler beim Senden</strong>
+            ❌ <strong>Fehler beim Senden</strong><br>
+            <small style="opacity: 0.8;">خطأ في الإرسال</small><br><br>
+            Es gab einen technischen Fehler beim Übermitteln Ihrer Daten.<br>
+            <small style="opacity: 0.8;">حدث خطأ تقني في إرسال بياناتك.</small>
+            <div class="contact-info">
+                <strong>📞 Support kontaktieren:</strong><br>
+                <small>اتصل بالدعم:</small><br>
+                Telefon: <a href="tel:+491234567890" class="phone-link">+49 123 456 7890</a><br>
+                E-Mail: <a href="mailto:support@hajj-services.de" class="phone-link">support@hajj-services.de</a><br>
+                WhatsApp: <a href="https://wa.me/491234567890" class="phone-link" target="_blank">📱 WhatsApp</a>
+            </div>
         </div>
 
         <div class="loading" id="loading">
             <div class="spinner"></div>
-            <p>Daten werden übermittelt...</p>
+            <p>Daten werden übermittelt...<br><small>جاري إرسال البيانات...</small></p>
         </div>
 
         <form id="hajjForm" method="POST">
@@ -427,6 +468,7 @@
                         <div class="label-arabic">رقم الهاتف (واتساب)</div>
                     </div>
                     <input type="tel" id="telefon" name="telefon" placeholder="+49 123 456789" required>
+                    <div class="info-text">Bitte WhatsApp-fähige Nummer angeben / يرجى إدخال رقم واتساب</div>
                 </div>
             </div>
 
@@ -444,12 +486,32 @@
                         <div class="label-arabic">الجنسية</div>
                     </div>
                     <select id="nationalitaet" name="nationalitaet" required>
-                        <option value="">Nationalität wählen</option>
-                        <option value="deutsch">Deutsch</option>
-                        <option value="oesterreichisch">Österreichisch</option>
-                        <option value="tuerkisch">Türkisch</option>
-                        <option value="syrisch">Syrisch</option>
-                        <option value="sonstige">Sonstige</option>
+                        <option value="">Nationalität wählen / اختر الجنسية</option>
+                        <optgroup label="Europa / أوروبا">
+                            <option value="deutsch">Deutsch / ألماني</option>
+                            <option value="oesterreichisch">Österreichisch / نمساوي</option>
+                            <option value="schweiz">Schweizer / سويسري</option>
+                            <option value="niederlaendisch">Niederländisch / هولندي</option>
+                            <option value="belgisch">Belgisch / بلجيكي</option>
+                            <option value="franzoesisch">Französisch / فرنسي</option>
+                            <option value="italienisch">Italienisch / إيطالي</option>
+                            <option value="spanisch">Spanisch / إسباني</option>
+                            <option value="britisch">Britisch / بريطاني</option>
+                            <option value="tuerkisch">Türkisch / تركي</option>
+                            <option value="syrisch">Syrisch / سوري</option>
+                            <option value="irakisch">Irakisch / عراقي</option>
+                            <option value="afghanisch">Afghanisch / أفغاني</option>
+                            <option value="marokkanisch">Marokkanisch / مغربي</option>
+                            <option value="tunesisch">Tunesisch / تونسي</option>
+                            <option value="aegyptisch">Ägyptisch / مصري</option>
+                            <option value="libanesisch">Libanesisch / لبناني</option>
+                            <option value="jordanisch">Jordanisch / أردني</option>
+                            <option value="palaestinensisch">Palästinensisch / فلسطيني</option>
+                            <option value="pakistanisch">Pakistanisch / باكستاني</option>
+                            <option value="indisch">Indisch / هندي</option>
+                            <option value="bangladeschisch">Bangladeschisch / بنغلاديشي</option>
+                            <option value="sonstige">Sonstige / أخرى</option>
+                        </optgroup>
                     </select>
                 </div>
             </div>
@@ -468,15 +530,15 @@
                 <div class="radio-group">
                     <div class="radio-item">
                         <input type="radio" id="pass_europaeisch" name="passart" value="europaeisch" required>
-                        <label for="pass_europaeisch">Europäischer Pass</label>
+                        <label for="pass_europaeisch">Europäischer Pass<br><small>الجواز الأوروبي</small></label>
                     </div>
                     <div class="radio-item">
                         <input type="radio" id="pass_blau" name="passart" value="blau" required>
-                        <label for="pass_blau">Blauer Reiseausweis</label>
+                        <label for="pass_blau">Blauer Reiseausweis<br><small>وثيقة السفر الزرقاء</small></label>
                     </div>
                     <div class="radio-item">
                         <input type="radio" id="pass_auslaendisch" name="passart" value="auslaendisch" required>
-                        <label for="pass_auslaendisch">Ausländischer Pass mit Aufenthaltstitel</label>
+                        <label for="pass_auslaendisch">Ausländischer Pass mit Aufenthaltstitel<br><small>جواز سفر أجنبي مع إقامة</small></label>
                     </div>
                 </div>
             </div>
@@ -487,7 +549,7 @@
                         <div class="label-german">Passnummer <span class="required">*</span></div>
                         <div class="label-arabic">رقم جواز السفر</div>
                     </div>
-                    <input type="text" id="passnummer" name="passnummer" placeholder="Passnummer" required>
+                    <input type="text" id="passnummer" name="passnummer" placeholder="Passnummer / رقم جواز السفر" required>
                 </div>
                 <div class="form-group">
                     <div class="bilingual-label">
@@ -495,6 +557,7 @@
                         <div class="label-arabic">صلاحية جواز السفر</div>
                     </div>
                     <input type="date" id="passgueltigkeit" name="passgueltigkeit" required>
+                    <div class="info-text">Muss mindestens 6 Monate gültig sein / يجب أن يكون صالحاً لمدة 6 أشهر على الأقل</div>
                 </div>
             </div>
 
@@ -509,9 +572,9 @@
                         <input type="file" id="aufenthaltstitel-image" name="aufenthaltstitel-image" accept="image/*,application/pdf">
                         <label for="aufenthaltstitel-image" class="file-upload-label">
                             <div>
-                                <div style="font-size: 2em; margin-bottom: 10px; color: #3498db;">📄</div>
-                                <div style="color: #2c3e50; font-weight: 500;">Aufenthaltstitel hochladen</div>
-                                <small>JPG, PNG, PDF • Max. 10MB</small>
+                                <div class="upload-icon">📄</div>
+                                <div class="upload-text">Aufenthaltstitel hochladen<br><small style="color: #7f8c8d;">تحميل تصريح الإقامة</small></div>
+                                <small>JPG, PNG, PDF • Max. 10MB<br>الوجهين مطلوبان • حد أقصى 10 ميجابايت</small>
                             </div>
                         </label>
                     </div>
@@ -519,6 +582,13 @@
                     <div class="file-info" id="aufenthaltstitel-info"></div>
                     <div class="preview-container" id="aufenthaltstitel-preview">
                         <img class="image-preview" id="aufenthaltstitel-img">
+                        <div class="pdf-preview" id="aufenthaltstitel-pdf" style="display: none;">
+                            <div style="background: #f8f9fa; border: 2px solid #dee2e6; border-radius: 10px; padding: 20px; text-align: center;">
+                                <div style="font-size: 3em; margin-bottom: 10px;">📄</div>
+                                <div style="font-weight: 600; color: #2c3e50;">PDF Dokument</div>
+                                <div style="color: #7f8c8d; margin-top: 5px;" id="aufenthaltstitel-pdf-name"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -539,9 +609,9 @@
                         <input type="file" id="passport-copy" name="passport-copy" accept="image/*,application/pdf" required>
                         <label for="passport-copy" class="file-upload-label">
                             <div>
-                                <div style="font-size: 2em; margin-bottom: 10px; color: #3498db;">📋</div>
-                                <div style="color: #2c3e50; font-weight: 500;">Reisepass Kopie</div>
-                                <small>JPG, PNG, PDF • Max. 10MB</small>
+                                <div class="upload-icon">📋</div>
+                                <div class="upload-text">Reisepass Kopie<br><small style="color: #7f8c8d;">نسخة جواز السفر</small></div>
+                                <small>JPG, PNG, PDF • Max. 10MB<br>جميع الصفحات ذات الصلة • حد أقصى 10 ميجابايت</small>
                             </div>
                         </label>
                     </div>
@@ -549,6 +619,13 @@
                     <div class="file-info" id="passport-copy-info"></div>
                     <div class="preview-container" id="passport-copy-preview">
                         <img class="image-preview" id="passport-copy-img">
+                        <div class="pdf-preview" id="passport-copy-pdf" style="display: none;">
+                            <div style="background: #f8f9fa; border: 2px solid #dee2e6; border-radius: 10px; padding: 20px; text-align: center;">
+                                <div style="font-size: 3em; margin-bottom: 10px;">📄</div>
+                                <div style="font-weight: 600; color: #2c3e50;">PDF Dokument</div>
+                                <div style="color: #7f8c8d; margin-top: 5px;" id="passport-copy-pdf-name"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -561,9 +638,9 @@
                         <input type="file" id="passport-photo" name="passport-photo" accept="image/*,application/pdf" required>
                         <label for="passport-photo" class="file-upload-label">
                             <div>
-                                <div style="font-size: 2em; margin-bottom: 10px; color: #3498db;">📷</div>
-                                <div style="color: #2c3e50; font-weight: 500;">Biometrisches Passbild</div>
-                                <small>JPG, PNG, PDF • Max. 10MB</small>
+                                <div class="upload-icon">📷</div>
+                                <div class="upload-text">Biometrisches Passbild<br><small style="color: #7f8c8d;">صورة بيومترية</small></div>
+                                <small>JPG, PNG, PDF • Max. 10MB<br>خلفية بيضاء، 35x45 ملم • حد أقصى 10 ميجابايت</small>
                             </div>
                         </label>
                     </div>
@@ -571,6 +648,13 @@
                     <div class="file-info" id="passport-photo-info"></div>
                     <div class="preview-container" id="passport-photo-preview">
                         <img class="image-preview" id="passport-photo-img">
+                        <div class="pdf-preview" id="passport-photo-pdf" style="display: none;">
+                            <div style="background: #f8f9fa; border: 2px solid #dee2e6; border-radius: 10px; padding: 20px; text-align: center;">
+                                <div style="font-size: 3em; margin-bottom: 10px;">📄</div>
+                                <div style="font-weight: 600; color: #2c3e50;">PDF Dokument</div>
+                                <div style="color: #7f8c8d; margin-top: 5px;" id="passport-photo-pdf-name"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -596,37 +680,23 @@
                         <label for="nusuk_nein">Nein / لا</label>
                     </div>
                 </div>
+                <div class="info-text">
+                    Nusuk ist die offizielle Saudi-Arabische Plattform für Hajj und Umrah Registrierungen<br>
+                    <small>نسك هو المنصة الرسمية السعودية لتسجيلات الحج والعمرة</small>
+                </div>
             </div>
 
             <button type="button" class="submit-btn" id="submitButton">
-                📤 Hajj-Anmeldung absenden (DEBUG)
+                Hajj-Anmeldung absenden<br><small style="font-size: 0.8em; opacity: 0.9;">إرسال تسجيل الحج</small>
             </button>
         </form>
     </div>
 </div>
 
 <script>
-    // DEBUG LOGGING
-    function debugLog(message) {
-        console.log('🐛 DEBUG:', message);
-        const debugInfo = document.getElementById('debugInfo');
-        if (debugInfo) {
-            debugInfo.innerHTML += '<br>' + new Date().toLocaleTimeString() + ': ' + message;
-        }
-    }
-
-    debugLog('Script wird geladen...');
-
     // Document ready handler
     document.addEventListener('DOMContentLoaded', function() {
-        debugLog('DOM bereit, Event-Listener werden eingerichtet...');
-
-        try {
-            setupEventListeners();
-            debugLog('Event-Listener erfolgreich eingerichtet');
-        } catch (error) {
-            debugLog('FEHLER beim Einrichten der Event-Listener: ' + error.message);
-        }
+        setupEventListeners();
     });
 
     function setupEventListeners() {
@@ -634,51 +704,39 @@
         const submitButton = document.getElementById('submitButton');
         if (submitButton) {
             submitButton.addEventListener('click', function(e) {
-                debugLog('Submit-Button geklickt!');
                 e.preventDefault();
                 e.stopPropagation();
                 handleFormSubmission();
             });
-            debugLog('Submit-Button Event-Listener hinzugefügt');
-        } else {
-            debugLog('FEHLER: Submit-Button nicht gefunden!');
         }
 
         // Form submit handler (backup)
         const form = document.getElementById('hajjForm');
         if (form) {
             form.addEventListener('submit', function(e) {
-                debugLog('Form-Submit Event ausgelöst (wird blockiert)');
                 e.preventDefault();
                 e.stopPropagation();
                 handleFormSubmission();
                 return false;
             });
-            debugLog('Form Event-Listener hinzugefügt');
-        } else {
-            debugLog('FEHLER: Form nicht gefunden!');
         }
 
         // Conditional Aufenthaltstitel field
         const passartRadios = document.querySelectorAll('input[name="passart"]');
         passartRadios.forEach(radio => {
             radio.addEventListener('change', function() {
-                debugLog('Passart geändert zu: ' + this.value);
                 const aufenthaltstitelSection = document.getElementById('aufenthaltstitelSection');
                 const aufenthaltstitelInput = document.getElementById('aufenthaltstitel-image');
 
                 if (this.value === 'auslaendisch') {
                     aufenthaltstitelSection.classList.add('show');
                     aufenthaltstitelInput.required = true;
-                    debugLog('Aufenthaltstitel-Feld angezeigt und als erforderlich markiert');
                 } else {
                     aufenthaltstitelSection.classList.remove('show');
                     aufenthaltstitelInput.required = false;
-                    debugLog('Aufenthaltstitel-Feld ausgeblendet');
                 }
             });
         });
-        debugLog('Passart Event-Listener hinzugefügt');
 
         // File upload handlers
         setupFileUpload('passport-copy');
@@ -692,16 +750,7 @@
             input.addEventListener('change', function(e) {
                 const file = e.target.files[0];
                 if (file) {
-                    debugLog(`Datei ausgewählt für ${inputId}: ${file.name} (${(file.size/1024).toFixed(1)}KB)`);
-
-                    // Simple validation
-                    const maxSize = 10 * 1024 * 1024; // 10MB
-                    if (file.size > maxSize) {
-                        debugLog(`FEHLER: Datei zu groß: ${(file.size/1024/1024).toFixed(1)}MB`);
-                        alert(`Datei zu groß: ${(file.size/1024/1024).toFixed(1)}MB (Max: 10MB)`);
-                        input.value = '';
-                        return;
-                    }
+                    validateFile(file, input, inputId + '-error', inputId + '-info');
 
                     // Show preview for images
                     if (file.type.startsWith('image/')) {
@@ -712,45 +761,99 @@
                             reader.onload = function(e) {
                                 img.src = e.target.result;
                                 preview.style.display = 'block';
-                                debugLog(`Bild-Vorschau für ${inputId} angezeigt`);
                             };
                             reader.readAsDataURL(file);
+                        }
+                    } else if (file.type === 'application/pdf') {
+                        const preview = document.getElementById(inputId + '-preview');
+                        const pdfPreview = document.getElementById(inputId + '-pdf');
+                        const pdfName = document.getElementById(inputId + '-pdf-name');
+                        if (preview && pdfPreview && pdfName) {
+                            pdfName.textContent = file.name;
+                            pdfPreview.style.display = 'block';
+                            preview.style.display = 'block';
                         }
                     }
                 }
             });
-            debugLog(`File-Upload Event-Listener für ${inputId} hinzugefügt`);
         }
+    }
+
+    // File validation function
+    function validateFile(file, inputElement, errorElementId, infoElementId) {
+        const maxSize = 10 * 1024 * 1024; // 10MB in bytes
+        const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp', 'application/pdf'];
+        const errorElement = document.getElementById(errorElementId);
+        const infoElement = document.getElementById(infoElementId);
+        const label = inputElement.parentElement.querySelector('.file-upload-label');
+
+        // Reset previous states
+        if (errorElement) errorElement.style.display = 'none';
+        if (infoElement) infoElement.style.display = 'none';
+        if (label) label.classList.remove('error');
+
+        // Check file type
+        if (!allowedTypes.includes(file.type)) {
+            if (errorElement) {
+                errorElement.innerHTML = `
+                    ❌ Ungültiger Dateityp: ${file.type}<br>
+                    Erlaubt: JPG, PNG, GIF, WebP, PDF<br>
+                    <small>نوع ملف غير صحيح. المسموح: JPG, PNG, GIF, WebP, PDF</small>
+                `;
+                errorElement.style.display = 'block';
+            }
+            if (label) label.classList.add('error');
+            inputElement.value = '';
+            return false;
+        }
+
+        // Check file size
+        if (file.size > maxSize) {
+            const sizeMB = (file.size / (1024 * 1024)).toFixed(2);
+            if (errorElement) {
+                errorElement.innerHTML = `
+                    ❌ Datei zu groß: ${sizeMB}MB (Max: 10MB)<br>
+                    <small>الملف كبير جداً: ${sizeMB} ميجابايت (الحد الأقصى: 10 ميجابايت)</small>
+                `;
+                errorElement.style.display = 'block';
+            }
+            if (label) label.classList.add('error');
+            inputElement.value = '';
+            return false;
+        }
+
+        // File is valid
+        const sizeMB = (file.size / (1024 * 1024)).toFixed(2);
+        const fileTypeText = file.type === 'application/pdf' ? 'PDF' : 'Bild';
+        const fileTypeArabic = file.type === 'application/pdf' ? 'PDF' : 'صورة';
+        if (infoElement) {
+            infoElement.innerHTML = `
+                ✅ ${fileTypeText} akzeptiert: ${file.name} (${sizeMB}MB)<br>
+                <small>تم قبول ${fileTypeArabic}: ${file.name} (${sizeMB} ميجابايت)</small>
+            `;
+            infoElement.style.display = 'block';
+        }
+        return true;
     }
 
     // Main form submission handler
     function handleFormSubmission() {
-        debugLog('=== FORM SUBMISSION GESTARTET ===');
-
         const form = document.getElementById('hajjForm');
         const submitBtn = document.getElementById('submitButton');
         const loading = document.getElementById('loading');
         const successMessage = document.getElementById('successMessage');
         const errorMessage = document.getElementById('errorMessage');
 
-        // Hide previous messages
-        successMessage.style.display = 'none';
-        errorMessage.style.display = 'none';
-
         // Prevent double submission
         if (submitBtn.disabled) {
-            debugLog('ABBRUCH: Button bereits deaktiviert (Doppel-Submission verhindert)');
             return;
         }
 
         // Basic form validation
         if (!form.checkValidity()) {
-            debugLog('ABBRUCH: Form-Validierung fehlgeschlagen');
             form.reportValidity();
             return;
         }
-
-        debugLog('Form-Validierung erfolgreich');
 
         // Check required files
         const requiredFiles = ['passport-copy', 'passport-photo'];
@@ -760,86 +863,96 @@
             requiredFiles.push('aufenthaltstitel-image');
         }
 
-        debugLog('Überprüfe erforderliche Dateien: ' + requiredFiles.join(', '));
-        debugLog('Passart: ' + passart);
-
         for (const fileId of requiredFiles) {
             const fileInput = document.getElementById(fileId);
             if (!fileInput || !fileInput.files || fileInput.files.length === 0) {
-                debugLog(`FEHLER: Fehlende Datei: ${fileId}`);
                 alert(`Bitte laden Sie eine Datei für ${fileId} hoch`);
                 return;
-            } else {
-                const file = fileInput.files[0];
-                debugLog(`✓ Datei OK: ${fileId} - ${file.name} (${(file.size/1024).toFixed(1)}KB)`);
             }
         }
 
-        // Disable submit button
+        // Final file validation
+        const fileInputs = ['passport-copy', 'passport-photo', 'aufenthaltstitel-image'];
+        const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp', 'application/pdf'];
+        let hasInvalidFiles = false;
+
+        fileInputs.forEach(inputId => {
+            const input = document.getElementById(inputId);
+            if (input && input.files && input.files.length > 0) {
+                const file = input.files[0];
+
+                if (!allowedTypes.includes(file.type)) {
+                    hasInvalidFiles = true;
+                    alert(`❌ Ungültiger Dateityp: ${file.name}\nErlaubt: JPG, PNG, GIF, WebP, PDF`);
+                    return;
+                }
+
+                if (file.size > 10 * 1024 * 1024) {
+                    hasInvalidFiles = true;
+                    const sizeMB = (file.size / (1024 * 1024)).toFixed(2);
+                    alert(`❌ Fehler: ${file.name} ist ${sizeMB}MB groß (Max: 10MB)`);
+                }
+            }
+        });
+
+        if (hasInvalidFiles) {
+            return;
+        }
+
+        // Disable submit button and show loading
         submitBtn.disabled = true;
-        submitBtn.innerHTML = '⏳ Wird gesendet...';
+        submitBtn.innerHTML = '⏳ Wird gesendet...<br><small style="font-size: 0.8em; opacity: 0.9;">جاري الإرسال...</small>';
+
+        // Hide previous messages
+        successMessage.style.display = 'none';
+        errorMessage.style.display = 'none';
         loading.style.display = 'block';
-        debugLog('Submit-Button deaktiviert, Loading angezeigt');
 
         // Create FormData
         const formData = new FormData(form);
-        debugLog('FormData erstellt');
-
-        // Log form data contents
-        debugLog('=== FORM DATA INHALT ===');
-        for (let [key, value] of formData.entries()) {
-            if (value instanceof File) {
-                debugLog(`${key}: FILE - ${value.name} (${(value.size/1024).toFixed(1)}KB, ${value.type})`);
-            } else {
-                debugLog(`${key}: ${value}`);
-            }
-        }
 
         // Remove aufenthaltstitel if not needed
         if (passart !== 'auslaendisch') {
             formData.delete('aufenthaltstitel-image');
-            debugLog('Aufenthaltstitel-Datei entfernt (nicht erforderlich)');
         }
 
         // Submit to server
-        const submitUrl = '/.netlify/functions/submit-hajj-registration';
-        debugLog('Sende an URL: ' + submitUrl);
-
-        fetch(submitUrl, {
+        fetch('/.netlify/functions/submit-hajj-registration', {
             method: 'POST',
             body: formData
         })
             .then(response => {
-                debugLog(`Server-Antwort erhalten: Status ${response.status} (${response.statusText})`);
-
                 if (!response.ok) {
                     throw new Error(`Server Error ${response.status}: ${response.statusText}`);
                 }
                 return response.json();
             })
             .then(data => {
-                debugLog('JSON-Antwort erhalten: ' + JSON.stringify(data, null, 2));
                 loading.style.display = 'none';
 
                 if (data.success) {
-                    debugLog('🎉 ERFOLG! Registration ID: ' + data.id);
                     successMessage.innerHTML = `
-                    ✅ <strong>Erfolgreich versendet!</strong><br><br>
+                    ✅ <strong>Erfolgreich versendet!</strong><br>
+                    <small style="opacity: 0.8;">تم الإرسال بنجاح!</small><br><br>
                     Ihre Hajj-Registrierung wurde erfolgreich übermittelt (ID: ${data.id}).<br>
-                    Sie erhalten in Kürze eine Bestätigung per E-Mail.
+                    Sie erhalten in Kürze eine Bestätigung per E-Mail und WhatsApp.<br>
+                    <small style="opacity: 0.8;">تم إرسال تسجيل الحج الخاص بك بنجاح. ستتلقى تأكيداً عبر البريد الإلكتروني وواتساب.</small>
                 `;
                     successMessage.style.display = 'block';
 
-                    // Reset form
+                    // Reset form and previews
                     form.reset();
                     document.querySelectorAll('.preview-container').forEach(preview => {
                         preview.style.display = 'none';
+                    });
+                    document.querySelectorAll('.file-info').forEach(info => {
+                        info.style.display = 'none';
                     });
                     document.getElementById('aufenthaltstitelSection').classList.remove('show');
 
                     // Reset button
                     submitBtn.disabled = false;
-                    submitBtn.innerHTML = '📤 Hajj-Anmeldung absenden (DEBUG)';
+                    submitBtn.innerHTML = '📤 Hajj-Anmeldung absenden<br><small style="font-size: 0.8em; opacity: 0.9;">إرسال تسجيل الحج</small>';
 
                     // Scroll to success message
                     successMessage.scrollIntoView({ behavior: 'smooth' });
@@ -850,7 +963,6 @@
             })
             .catch(error => {
                 loading.style.display = 'none';
-                debugLog('❌ FEHLER: ' + error.message);
                 console.error('Submit Error:', error);
 
                 let errorDetails = '';
@@ -863,20 +975,24 @@
                 }
 
                 errorMessage.innerHTML = `
-                ❌ <strong>Fehler beim Senden</strong><br><br>
+                ❌ <strong>Fehler beim Senden</strong><br>
+                <small style="opacity: 0.8;">خطأ في الإرسال</small><br><br>
                 <strong>Fehlerdetails:</strong> ${errorDetails}<br><br>
-                Bitte versuchen Sie es erneut oder kontaktieren Sie den Support.
-                <div style="background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 10px; padding: 15px; margin-top: 15px; text-align: center;">
+                Bitte versuchen Sie es erneut oder kontaktieren Sie uns für Hilfe.<br>
+                <small style="opacity: 0.8;">يرجى المحاولة مرة أخرى أو الاتصال بنا للحصول على المساعدة.</small>
+                <div class="contact-info">
                     <strong>📞 Support kontaktieren:</strong><br>
-                    Telefon: <a href="tel:+491234567890" style="color: #3498db; text-decoration: none; font-weight: bold;">+49 123 456 7890</a><br>
-                    E-Mail: <a href="mailto:support@hajj-services.de" style="color: #3498db; text-decoration: none; font-weight: bold;">support@hajj-services.de</a>
+                    <small>اتصل بالدعم:</small><br>
+                    Telefon: <a href="tel:+491234567890" class="phone-link">+49 123 456 7890</a><br>
+                    E-Mail: <a href="mailto:support@hajj-services.de" class="phone-link">support@hajj-services.de</a><br>
+                    WhatsApp: <a href="https://wa.me/491234567890?text=Hilfe%20bei%20Hajj%20Registration" class="phone-link" target="_blank">📱 WhatsApp Support</a>
                 </div>
             `;
                 errorMessage.style.display = 'block';
 
                 // Re-enable button after error
                 submitBtn.disabled = false;
-                submitBtn.innerHTML = '🔄 Erneut versuchen (DEBUG)';
+                submitBtn.innerHTML = '🔄 Erneut versuchen<br><small style="font-size: 0.8em; opacity: 0.9;">حاول مرة أخرى</small>';
 
                 // Scroll to error message
                 errorMessage.scrollIntoView({ behavior: 'smooth' });
@@ -893,7 +1009,6 @@
                 value = '+49' + value.substring(1);
             }
             e.target.value = value;
-            debugLog('Telefonnummer formatiert: ' + value);
         }
     });
 
@@ -911,15 +1026,26 @@
             const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (email && !emailPattern.test(email)) {
                 e.target.setCustomValidity('Bitte geben Sie eine gültige E-Mail Adresse ein');
-                debugLog('E-Mail-Validierung fehlgeschlagen: ' + email);
             } else {
                 e.target.setCustomValidity('');
-                debugLog('E-Mail-Validierung erfolgreich: ' + email);
             }
         }
     }, true);
 
-    // Age validation
+    // Passport validity check (must be at least 6 months in future)
+    document.addEventListener('change', function(e) {
+        if (e.target && e.target.id === 'passgueltigkeit') {
+            const selectedDate = new Date(e.target.value);
+            const sixMonthsFromNow = new Date();
+            sixMonthsFromNow.setMonth(sixMonthsFromNow.getMonth() + 6);
+
+            if (selectedDate < sixMonthsFromNow) {
+                alert('⚠️ Warnung: Ihr Pass läuft in weniger als 6 Monaten ab. Dies könnte zu Problemen führen.\n\nتحذير: ينتهي جوازك خلال أقل من 6 أشهر. قد يؤدي هذا إلى مشاكل.');
+            }
+        }
+    });
+
+    // Age validation (must be at least 18 years old)
     document.addEventListener('change', function(e) {
         if (e.target && e.target.id === 'geburtsdatum') {
             const birthDate = new Date(e.target.value);
@@ -931,45 +1057,11 @@
                 age--;
             }
 
-            debugLog('Alter berechnet: ' + age + ' Jahre');
-
             if (age < 18) {
-                alert('⚠️ Warnung: Sie müssen mindestens 18 Jahre alt sein.');
-                debugLog('Altersvalidierung fehlgeschlagen: ' + age + ' Jahre');
+                alert('⚠️ Sie müssen mindestens 18 Jahre alt sein.\n\nتحذير: يجب أن تكون عمرك 18 سنة على الأقل.');
             }
         }
     });
-
-    // Passport validity check
-    document.addEventListener('change', function(e) {
-        if (e.target && e.target.id === 'passgueltigkeit') {
-            const selectedDate = new Date(e.target.value);
-            const sixMonthsFromNow = new Date();
-            sixMonthsFromNow.setMonth(sixMonthsFromNow.getMonth() + 6);
-
-            if (selectedDate < sixMonthsFromNow) {
-                alert('⚠️ Warnung: Ihr Pass läuft in weniger als 6 Monaten ab.');
-                debugLog('Pass-Gültigkeit Warnung: Läuft ab am ' + selectedDate.toLocaleDateString());
-            } else {
-                debugLog('Pass-Gültigkeit OK: Läuft ab am ' + selectedDate.toLocaleDateString());
-            }
-        }
-    });
-
-    debugLog('Alle Event-Listener eingerichtet. Formular bereit.');
-
-    // Test function (can be called from console)
-    window.testSubmit = function() {
-        debugLog('🧪 TEST-SUBMISSION gestartet');
-        handleFormSubmission();
-    };
-
-    // Global error handler
-    window.addEventListener('error', function(e) {
-        debugLog('🚨 GLOBALER JAVASCRIPT-FEHLER: ' + e.message + ' in ' + e.filename + ':' + e.lineno);
-    });
-
-    debugLog('🚀 JavaScript-Setup abgeschlossen!');
 </script>
 </body>
 </html>
