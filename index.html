@@ -430,10 +430,6 @@
 <body>
 <div class="container">
     <div class="header">
-        <div class="logo-upload">
-            <input type="file" id="logoUpload" accept="image/*">
-            <label for="logoUpload">📎 Logo</label>
-        </div>
 
         <div id="logoContainer">
             <img src="./logo.jpg" alt="Logo" class="logo" id="logoImage">
@@ -473,7 +469,7 @@
         <form id="hajjForm" method="POST" action="#">
             <!-- Personal Information Section -->
             <div class="section-title">
-                <div>👤 Persönliche Informationen</div>
+                <div>Persönliche Informationen</div>
                 <div class="section-title-arabic">المعلومات الشخصية</div>
             </div>
 
@@ -558,7 +554,7 @@
 
             <!-- Passport Information Section -->
             <div class="section-title">
-                <div>🛂 Reisepass Informationen</div>
+                <div>Reisepass Informationen</div>
                 <div class="section-title-arabic">معلومات جواز السفر</div>
             </div>
 
@@ -635,7 +631,7 @@
 
             <!-- Document Upload Section -->
             <div class="section-title">
-                <div>📸 Dokumente hochladen</div>
+                <div>Dokumente hochladen</div>
                 <div class="section-title-arabic">تحميل الوثائق</div>
             </div>
 
@@ -727,7 +723,7 @@
             </div>
 
             <button type="button" class="submit-btn" id="submitButton">
-                📤 Hajj-Registrierung absenden<br><small style="font-size: 0.8em; opacity: 0.9;">إرسال تسجيل الحج</small>
+                 Hajj-Anmeldung absenden<br><small style="font-size: 0.8em; opacity: 0.9;">إرسال تسجيل الحج</small>
             </button>
         </form>
     </div>
@@ -1109,11 +1105,6 @@
 
         if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
             age--;
-        }
-
-        if (age < 18) {
-            alert('⚠️ Sie müssen mindestens 18 Jahre alt sein für die Hajj-Registrierung.\n\nيجب أن تكون بعمر 18 عامًا على الأقل للتسجيل في الحج.');
-            e.target.value = '';
         }
     });
 </script>
