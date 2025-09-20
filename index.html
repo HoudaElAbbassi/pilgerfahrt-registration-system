@@ -36,8 +36,8 @@
         }
 
         .logo {
-            max-width: 150px;
-            max-height: 80px;
+            max-width: 200px;
+            max-height: 120px;
             margin-bottom: 20px;
             border-radius: 10px;
             box-shadow: 0 5px 15px rgba(255,255,255,0.2);
@@ -487,7 +487,6 @@
                         <div class="label-arabic">رقم الهاتف (واتساب)</div>
                     </div>
                     <input type="tel" id="telefon" name="telefon" placeholder="+49 123 456789" required>
-                    <div class="info-text">Bitte WhatsApp-fähige Nummer angeben / يرجى إدخال رقم واتساب</div>
                 </div>
             </div>
 
@@ -576,7 +575,7 @@
                         <div class="label-arabic">صلاحية جواز السفر</div>
                     </div>
                     <input type="date" id="passgueltigkeit" name="passgueltigkeit" required>
-                    <div class="info-text">Muss mindestens 6 Monate gültig sein / يجب أن يكون صالحاً لمدة 6 أشهر على الأقل</div>
+                    <div class="info-text">Muss mindestens bis Ende 2026 gültig sein / يجب أن يكون صالحاً حتى نهاية 2026 على الأقل</div>
                 </div>
             </div>
 
@@ -605,43 +604,6 @@
                             <div style="background: #f8f9fa; border: 2px solid #dee2e6; border-radius: 10px; padding: 20px; text-align: center;">
                                 <div style="font-size: 3em; margin-bottom: 10px;">📄</div>
                                 <div style="font-weight: 600; color: #2c3e50;">PDF Dokument</div>
-                                <div style="color: #7f8c8d; margin-top: 5px;" id="aufenthaltstitel-pdf-name"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Document Upload Section -->
-            <div class="section-title">
-                <div>Dokumente hochladen</div>
-                <div class="section-title-arabic">تحميل الوثائق</div>
-            </div>
-
-            <div class="form-row">
-                <div class="form-group">
-                    <div class="bilingual-label">
-                        <div class="label-german">Reisepass Kopie <span class="required">*</span></div>
-                        <div class="label-arabic">نسخة من جواز السفر</div>
-                    </div>
-                    <div class="file-upload">
-                        <input type="file" id="passport-copy" name="passport-copy" accept="image/*,application/pdf" required>
-                        <label for="passport-copy" class="file-upload-label">
-                            <div>
-                                <div class="upload-icon">📋</div>
-                                <div class="upload-text">Reisepass Kopie<br><small style="color: #7f8c8d;">نسخة جواز السفر</small></div>
-                                <small>JPG, PNG, PDF • Max. 10MB<br>جميع الصفحات ذات الصلة • حد أقصى 10 ميجابايت</small>
-                            </div>
-                        </label>
-                    </div>
-                    <div class="file-error" id="passport-copy-error"></div>
-                    <div class="file-info" id="passport-copy-info"></div>
-                    <div class="preview-container" id="passport-copy-preview">
-                        <img class="image-preview" id="passport-copy-img">
-                        <div class="pdf-preview" id="passport-copy-pdf" style="display: none;">
-                            <div style="background: #f8f9fa; border: 2px solid #dee2e6; border-radius: 10px; padding: 20px; text-align: center;">
-                                <div style="font-size: 3em; margin-bottom: 10px;">📄</div>
-                                <div style="font-weight: 600; color: #2c3e50;">PDF Dokument</div>
                                 <div style="color: #7f8c8d; margin-top: 5px;" id="passport-copy-pdf-name"></div>
                             </div>
                         </div>
@@ -650,15 +612,15 @@
 
                 <div class="form-group">
                     <div class="bilingual-label">
-                        <div class="label-german">Biometrisches Passbild <span class="required">*</span></div>
-                        <div class="label-arabic">صورة جواز سفر بيومترية</div>
+                        <div class="label-german">Passbild <span class="required">*</span></div>
+                        <div class="label-arabic">صورة جواز السفر</div>
                     </div>
                     <div class="file-upload">
                         <input type="file" id="passport-photo" name="passport-photo" accept="image/*,application/pdf" required>
                         <label for="passport-photo" class="file-upload-label">
                             <div>
                                 <div class="upload-icon">📷</div>
-                                <div class="upload-text">Biometrisches Passbild<br><small style="color: #7f8c8d;">صورة بيومترية</small></div>
+                                <div class="upload-text">Passbild<br><small style="color: #7f8c8d;">صورة جواز السفر</small></div>
                                 <small>JPG, PNG, PDF • Max. 10MB<br>خلفية بيضاء، 35x45 ملم • حد أقصى 10 ميجابايت</small>
                             </div>
                         </label>
@@ -701,7 +663,8 @@
                 </div>
                 <div class="info-text">
                     Nusuk ist die offizielle Saudi-Arabische Plattform für Hajj und Umrah Registrierungen<br>
-                    <small>نسك هو المنصة الرسمية السعودية لتسجيلات الحج والعمرة</small>
+                    <small>نسك هو المنصة الرسمية السعودية لتسجيلات الحج والعمرة</small><br>
+                    <a href="https://hajj.nusuk.sa" target="_blank" style="color: #16a34a; font-weight: bold; text-decoration: none;">🔗 Zur Nusuk Plattform: hajj.nusuk.sa</a>
                 </div>
             </div>
 
@@ -1051,15 +1014,14 @@
         }
     }, true);
 
-    // Passport validity check (must be at least 6 months in future)
+    // Passport validity check (must be valid until end of 2026)
     document.addEventListener('change', function(e) {
         if (e.target && e.target.id === 'passgueltigkeit') {
             const selectedDate = new Date(e.target.value);
-            const sixMonthsFromNow = new Date();
-            sixMonthsFromNow.setMonth(sixMonthsFromNow.getMonth() + 6);
+            const endOf2026 = new Date('2026-12-31');
 
-            if (selectedDate < sixMonthsFromNow) {
-                alert('⚠️ Warnung: Ihr Pass läuft in weniger als 6 Monaten ab. Dies könnte zu Problemen führen.\n\nتحذير: ينتهي جوازك خلال أقل من 6 أشهر. قد يؤدي هذا إلى مشاكل.');
+            if (selectedDate < endOf2026) {
+                alert('⚠️ Warnung: Ihr Pass muss mindestens bis Ende 2026 gültig sein. Dies ist erforderlich für die Hajj-Reise.\n\nتحذير: يجب أن يكون جوازك صالحاً حتى نهاية 2026 على الأقل. هذا مطلوب لرحلة الحج.');
             }
         }
     });
