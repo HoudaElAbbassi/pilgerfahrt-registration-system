@@ -68,7 +68,75 @@
         #old-form-container {
             display: none;
         }
+
+        /* Verstecke Jotform-Werbung */
+        .jotform-ad,
+        .formFooter,
+        .formFooter-wrapper,
+        .formFooter-text,
+        a[href="https://www.jotform.com/?utm_source=formfooter&utm_medium=banner&utm_term=252763030741350&utm_content=form_logo&utm_campaign=powered_by_jotform"],
+        div[data-reactid=".1.1"] {
+            display: none !important;
+            opacity: 0 !important;
+            height: 0 !important;
+            visibility: hidden !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            overflow: hidden !important;
+            position: absolute !important;
+            pointer-events: none !important;
+        }
+
+        /* Zusätzliches CSS für eine bessere Integration */
+        iframe.jotform-iframe {
+            width: 100% !important;
+            min-height: 600px; /* Anpassen nach Bedarf */
+        }
     </style>
+
+    <!-- Script zum Verstecken der Jotform-Werbung nach dem Laden -->
+    <script type="text/javascript">
+        window.addEventListener('load', function() {
+            // Wiederholter Versuch, die Werbung zu verbergen (falls sie dynamisch geladen wird)
+            var removeAds = function() {
+                var footers = document.querySelectorAll('.formFooter, .jotform-ad, .formFooter-wrapper, div[data-reactid=".1.1"]');
+                footers.forEach(function(footer) {
+                    if (footer) {
+                        footer.style.display = 'none';
+                        footer.style.visibility = 'hidden';
+                        footer.style.height = '0';
+                        footer.style.overflow = 'hidden';
+                        footer.style.opacity = '0';
+                        footer.style.margin = '0';
+                        footer.style.padding = '0';
+                    }
+                });
+
+                // Auch in iframes suchen
+                var iframes = document.querySelectorAll('iframe');
+                iframes.forEach(function(iframe) {
+                    try {
+                        var iframeFooters = iframe.contentDocument.querySelectorAll('.formFooter, .jotform-ad, .formFooter-wrapper');
+                        iframeFooters.forEach(function(footer) {
+                            if (footer) {
+                                footer.style.display = 'none';
+                                footer.style.visibility = 'hidden';
+                            }
+                        });
+                    } catch(e) {
+                        // Cross-Origin-Fehler ignorieren
+                    }
+                });
+            };
+
+            // Führe die Funktion mehrmals aus, um sicherzustellen, dass auch dynamisch nachgeladene Elemente versteckt werden
+            removeAds();
+            setTimeout(removeAds, 1000);
+            setTimeout(removeAds, 2000);
+            setTimeout(removeAds, 3000);
+            setTimeout(removeAds, 5000);
+        });
+    </script>
 </head>
 <body>
 <div class="container">
@@ -91,5 +159,34 @@
         </div>
     </div>
 </div>
+
+<!-- Zusätzliches Script zur Handhabung des iframes nach dem Laden -->
+<script>
+    window.addEventListener('load', function() {
+        // Versuche, das iframe zu finden und Anpassungen vorzunehmen
+        setTimeout(function() {
+            const iframes = document.querySelectorAll('iframe');
+            iframes.forEach(iframe => {
+                if (iframe.src && iframe.src.includes('jotform')) {
+                    iframe.style.width = '100%';
+                    iframe.style.minHeight = '600px';
+                    iframe.style.border = 'none';
+                    iframe.scrolling = 'no';
+
+                    // Versuche, iframe-Höhe automatisch anzupassen
+                    iframe.onload = function() {
+                        try {
+                            const bodyHeight = iframe.contentWindow.document.body.scrollHeight;
+                            iframe.style.height = (bodyHeight + 50) + 'px';
+                        } catch(e) {
+                            console.log('Konnte iframe-Höhe nicht anpassen:', e);
+                        }
+                    };
+                }
+            });
+        }, 1000);
+    });
+</script>
+
 </body>
 </html>
