@@ -634,37 +634,38 @@
                             <div style="background: #f8f9fa; border: 2px solid #dee2e6; border-radius: 10px; padding: 20px; text-align: center;">
                                 <div style="font-size: 3em; margin-bottom: 10px;">📄</div>
                                 <div style="font-weight: 600; color: #2c3e50;">PDF Dokument</div>
-                                <div style="color: #7f8c8d; margin-top: 5px;" id="passport-copy-pdf-name"></div>
+                                <div style="color: #7f8c8d; margin-top: 5px;" id="aufenthaltstitel-pdf-name"></div>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <div class="form-group">
-                    <div class="bilingual-label">
-                        <div class="label-german">Passbild <span class="required">*</span></div>
-                        <div class="label-arabic">صورة جواز السفر</div>
-                    </div>
-                    <div class="file-upload">
-                        <input type="file" id="passport-photo" name="passport-photo" accept="image/*,application/pdf" required>
-                        <label for="passport-photo" class="file-upload-label">
-                            <div>
-                                <div class="upload-icon">📷</div>
-                                <div class="upload-text">Passbild<br><small style="color: #7f8c8d;">صورة جواز السفر</small></div>
-                                <small>JPG, PNG, PDF • Max. 10MB<br>خلفية بيضاء، 35x45 ملم • حد أقصى 10 ميجابايت</small>
-                            </div>
-                        </label>
-                    </div>
-                    <div class="file-error" id="passport-photo-error"></div>
-                    <div class="file-info" id="passport-photo-info"></div>
-                    <div class="preview-container" id="passport-photo-preview">
-                        <img class="image-preview" id="passport-photo-img">
-                        <div class="pdf-preview" id="passport-photo-pdf" style="display: none;">
-                            <div style="background: #f8f9fa; border: 2px solid #dee2e6; border-radius: 10px; padding: 20px; text-align: center;">
-                                <div style="font-size: 3em; margin-bottom: 10px;">📄</div>
-                                <div style="font-weight: 600; color: #2c3e50;">PDF Dokument</div>
-                                <div style="color: #7f8c8d; margin-top: 5px;" id="passport-photo-pdf-name"></div>
-                            </div>
+            <!-- Passbild als separate Sektion, nicht im bedingten Bereich -->
+            <div class="form-group">
+                <div class="bilingual-label">
+                    <div class="label-german">Passbild <span class="required">*</span></div>
+                    <div class="label-arabic">صورة جواز السفر</div>
+                </div>
+                <div class="file-upload">
+                    <input type="file" id="passport-photo" name="passport-photo" accept="image/*,application/pdf" required>
+                    <label for="passport-photo" class="file-upload-label">
+                        <div>
+                            <div class="upload-icon">📷</div>
+                            <div class="upload-text">Passbild<br><small style="color: #7f8c8d;">صورة جواز السفر</small></div>
+                            <small>JPG, PNG, PDF • Max. 10MB<br>خلفية بيضاء، 35x45 ملم • حد أقصى 10 ميجابايت</small>
+                        </div>
+                    </label>
+                </div>
+                <div class="file-error" id="passport-photo-error"></div>
+                <div class="file-info" id="passport-photo-info"></div>
+                <div class="preview-container" id="passport-photo-preview">
+                    <img class="image-preview" id="passport-photo-img">
+                    <div class="pdf-preview" id="passport-photo-pdf" style="display: none;">
+                        <div style="background: #f8f9fa; border: 2px solid #dee2e6; border-radius: 10px; padding: 20px; text-align: center;">
+                            <div style="font-size: 3em; margin-bottom: 10px;">📄</div>
+                            <div style="font-weight: 600; color: #2c3e50;">PDF Dokument</div>
+                            <div style="color: #7f8c8d; margin-top: 5px;" id="passport-photo-pdf-name"></div>
                         </div>
                     </div>
                 </div>
@@ -1076,3 +1077,4 @@
 </script>
 </body>
 </html>
+
